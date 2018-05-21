@@ -32,6 +32,7 @@
                                 <th>Dosis</th>
                                 <th>Efectos adversos</th>
                                 <th>Indicaciones</th>
+                                <th>Operaciones</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -46,6 +47,9 @@
                                     <td><?php echo $_medicamentos->getDisis('disis'); ?></td>
                                     <td><?php echo $_medicamentos->getEfectosadversos('efectosadversos'); ?></td>
                                     <td><?php echo $_medicamentos->getIndicaciones('indicaciones'); ?></td>
+                                    <td>
+                                        <button type="button" id="vermedicamentos" class="ui button violet" OnClick="location.href = 'LayoutMedico.php?load=medicamentosactualizar&idmedicamento=<?php  echo $_medicamentos->getIdMedicamento('idMedicamento'); ?>'"><i class="fa fa-eye"></i></button>
+                                    </td>
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>

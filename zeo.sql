@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.0
+-- version 4.7.7
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 17-05-2018 a las 21:23:11
--- Versión del servidor: 10.1.31-MariaDB
--- Versión de PHP: 7.2.4
+-- Tiempo de generación: 21-05-2018 a las 18:23:38
+-- Versión del servidor: 10.1.30-MariaDB
+-- Versión de PHP: 7.2.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -21,90 +21,95 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `zeo`
 --
-CREATE DATABASE IF NOT EXISTS `zeo` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-USE `zeo`;
 
 DELIMITER $$
 --
 -- Procedimientos
 --
-DROP PROCEDURE IF EXISTS `sp_actualizarEspecialidad`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_actualizarConsultorio` (IN `sp_Consultorio` INT, IN `sp_nombre` VARCHAR(180), IN `sp_pais` VARCHAR(35), IN `sp_departamento` INT, IN `sp_municipio` INT, IN `sp_domicilio` VARCHAR(120))  BEGIN
+UPDATE consultorio SET nombre = sp_nombre, pais = sp_pais, departamento = sp_departamento, municipio = sp_municipio, domicilio = sp_domicilio WHERE idConsultorio = sp_Consultorio;
+select 'ok' as exito ;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_actualizarEspecialidad` (IN `sp_idEspecialidades` INT, IN `sp_detalle` VARCHAR(200))  BEGIN
 	UPDATE espacialidades SET detalle = sp_detalle WHERE idEspecialidades = sp_idEspecialidades;
     select 'ok' as exito ;
  END$$
 
-DROP PROCEDURE IF EXISTS `sp_actualizarEstadoCita`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_actualizarEstadoCita` (IN `sp_idCita` INT, IN `sp_estado` VARCHAR(35))  BEGIN
 	UPDATE cita SET estado = sp_estado WHERE idCita = sp_idCita;
     select 'ok' as exito;
 END$$
 
-DROP PROCEDURE IF EXISTS `sp_actualizarHorario`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_ActualizarEtapaTumor` (IN `sp_idEtapatumor` INT, IN `sp_nombreetapa` VARCHAR(25), IN `sp_Paciente` INT, IN `sp_Tumorprimario` INT, IN `sp_Ganglioslinfaticos` INT, IN `sp_Metastasis` INT, IN `sp_Clasificaciontumor` INT, IN `sp_diagnostico` VARCHAR(255))  BEGIN
+UPDATE etapatumor SET nombreetapa = sp_nombreetapa, Paciente = sp_Paciente, Tumorprimario = sp_Tumorprimario, Ganglioslinfaticos = sp_Ganglioslinfaticos,
+  Metastasis = sp_Metastasis, Clasificaciontumor = sp_Clasificaciontumor, diagnostico = sp_diagnostico WHERE idEtapatumor = sp_idEtapatumor;
+  select 'ok' as exito ;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_actualizarHorario` (IN `sp_Horario` INT, IN `sp_Medico` INT, IN `sp_Consultorio` INT, IN `sp_Especialidad` INT, IN `sp_Fecha` DATE, IN `sp_horainicio` TIME, IN `sp_horafinal` TIME)  BEGIN
 UPDATE horario SET Medico = sp_Medico, Consultorio = sp_Consultorio, Especialidad = sp_Especialidad, Fecha = sp_Fecha, horainicio = sp_horainicio, horafinal = sp_horafinal WHERE idHorario = sp_Horario;
     select 'ok' as exito;
 END$$
 
-DROP PROCEDURE IF EXISTS `sp_consultarActividadesEtapatumo`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_actualizarMedicamento` (IN `sp_Medicamento` INT, IN `sp_codigomaterial` VARCHAR(35), IN `sp_ean` BIGINT(20), IN `sp_nombre` VARCHAR(20), IN `sp_presentacion` VARCHAR(15), IN `sp_viaadministracion` VARCHAR(35), IN `sp_disis` DECIMAL(10,2), IN `sp_efectosadversos` VARCHAR(255), IN `sp_indicaciones` VARCHAR(255))  BEGIN
+UPDATE medicamentos SET codigomaterial = sp_codigomaterial, ean = sp_ean, nombre = sp_nombre,
+presentacion = sp_presentacion, viaadministracion = sp_viaadministracion, disis = sp_disis, efectosadversos = sp_efectosadversos, indicaciones = sp_indicaciones WHERE idMedicamento = sp_Medicamento;
+select 'ok' as exito ;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_consultarActividadesEtapatumo` (IN `sp_Cita` INT)  BEGIN
 	select * from actividades as a INNER JOIN etapatumor as et ON a.Etapatumor = et.idEtapatumor WHERE a.Cita = sp_Cita;
 END$$
 
-DROP PROCEDURE IF EXISTS `sp_Consultorios`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_consultorioId` (IN `sp_Consultorio` INT)  BEGIN
+select * from consultorio WHERE idConsultorio = sp_Consultorio;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_Consultorios` ()  BEGIN
-	SELECT c.idConsultorio, c.nombre, c.pais, d.departamento, m.municipio, c.domicilio
+	SELECT c.idConsultorio, c.nombre, c.pais, d.idDepartamento, d.departamento, m.idMunicipio, m.municipio, c.domicilio
     FROM consultorio c
     INNER JOIN departamentos d ON c.departamento = d.idDepartamento
     INNER JOIN municipios m ON c.municipio = m.idMunicipio;
 END$$
 
-DROP PROCEDURE IF EXISTS `sp_eliminarActividad`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_eliminarActividad` (IN `sp_Actividad` INT)  BEGIN
 delete from actividades where idActividad = sp_Actividad;
 select 'ok' as exito;
 END$$
 
-DROP PROCEDURE IF EXISTS `sp_eliminarMedicamento`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_eliminarMedicamento` (IN `sp_Medicamento` INT)  BEGIN
 delete from recetasmedicas where idRecetasmedicas = sp_Medicamento;
 select 'ok' as exito;
 END$$
 
-DROP PROCEDURE IF EXISTS `sp_GetClasificaciontumor`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_GetClasificaciontumor` ()  BEGIN
 	SELECT ct.idClasificaciontumor, ct.nombreclasificacion, CONCAT(tt.codigotTumor, ' ', tt.nombreTumor) AS 'Tipotumores', ct.detalle
     FROM clasificaciontumor ct
     INNER JOIN tipotumores tt ON ct.idClasificaciontumor = tt.idTipotumor;
 END$$
 
-DROP PROCEDURE IF EXISTS `sp_GetMedico`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_GetMedico` ()  BEGIN
    SELECT *
    FROM medicos;
 END$$
 
-DROP PROCEDURE IF EXISTS `sp_GetPacientes`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_GetPacientes` ()  BEGIN 
 	select * from cita as C INNER JOIN pacientes as P ON C.Paciente = P.idPaciente;
  END$$
 
-DROP PROCEDURE IF EXISTS `sp_horarioMedico`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_horarioMedico` (IN `sp_Medico` INT(3), IN `sp_Especialidad` INT(3))  BEGIN
 	SELECT idHorario as id, fecha as start, CONCAT(horainicio," - " , horafinal) as title FROM horario WHERE Medico = sp_Medico AND Especialidad = sp_Especialidad;
    END$$
 
-DROP PROCEDURE IF EXISTS `sp_horarioMedicoPorId`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_horarioMedicoPorId` (IN `sp_Medico` INT)  BEGIN
 select * from horario as h INNER JOIN  consultorio as c ON h.Consultorio = c.idConsultorio INNER JOIN espacialidades as e ON h.Especialidad = e.idEspecialidades WHERE h.Medico = sp_Medico;
 END$$
 
-DROP PROCEDURE IF EXISTS `sp_HorarioPaciente`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_HorarioPaciente` (IN `sp_Medico` INT)  BEGIN
 	SELECT C.idCita as id,  H.fecha AS start, CONCAT(P.nombre," - " , P.apellido , " - " , C.concepto , " - ", C.estado) as title  from cita as C INNER JOIN pacientes as P ON C.Paciente = P.idPaciente INNER JOIN horario as H ON H.idHorario = C.horario INNER JOIN medicos AS M ON M.idMedico = H.Medico WHERE M.idMedico = sp_Medico;
    END$$
 
-DROP PROCEDURE IF EXISTS `sp_iniciarsesionadministrador`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_iniciarsesionadministrador` (IN `sp_email` VARCHAR(200), IN `sp_clave` VARCHAR(100), IN `sp_rol` INT(11))  BEGIN
    SELECT *
    FROM administradores a 
@@ -112,7 +117,6 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_iniciarsesionadministrador` (IN 
    WHERE a.email = sp_email AND a.clave = sp_clave AND p.Rol = sp_rol;
 END$$
 
-DROP PROCEDURE IF EXISTS `sp_iniciarsesionauxiliar`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_iniciarsesionauxiliar` (IN `sp_email` VARCHAR(200), IN `sp_clave` VARCHAR(100), IN `sp_rol` INT(11))  BEGIN
    SELECT *
    FROM auxiliares ax 
@@ -120,7 +124,6 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_iniciarsesionauxiliar` (IN `sp_e
    WHERE ax.email = sp_email AND ax.clave = sp_clave AND p.Rol = sp_rol;
 END$$
 
-DROP PROCEDURE IF EXISTS `sp_iniciarsesionmedico`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_iniciarsesionmedico` (IN `sp_email` VARCHAR(200), IN `sp_clave` VARCHAR(100), IN `sp_rol` INT(11))  BEGIN
    SELECT *
    FROM medicos m 
@@ -128,7 +131,6 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_iniciarsesionmedico` (IN `sp_ema
    WHERE m.email = sp_email AND m.clave = sp_clave AND p.Rol = sp_rol;
 END$$
 
-DROP PROCEDURE IF EXISTS `sp_iniciarsesionpaciente`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_iniciarsesionpaciente` (IN `sp_email` VARCHAR(200), IN `sp_clave` VARCHAR(100), IN `sp_rol` INT(11))  BEGIN
    SELECT *
    FROM pacientes p 
@@ -136,81 +138,70 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_iniciarsesionpaciente` (IN `sp_e
    WHERE p.email = sp_email AND p.clave = sp_clave AND p.Rol = sp_rol;
 END$$
 
-DROP PROCEDURE IF EXISTS `sp_ListaClasificaciontumor`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_ListaClasificaciontumor` ()  BEGIN
    SELECT ct.nombreclasificacion, tt.codigotTumor, tt.nombreTumor, tt.detalle
    FROM clasificaciontumor ct 
    INNER JOIN tipotumores tt ON ct.Tipotumores = tt.idTipotumor;
 END$$
 
-DROP PROCEDURE IF EXISTS `sp_ListaDepartamentos`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_ListaDepartamentos` ()  BEGIN
 	 SELECT * FROM departamentos;
 END$$
 
-DROP PROCEDURE IF EXISTS `sp_listadoActividadesMedicamentosPacientes`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_listadoActividadesMedicamentosPacientes` (IN `sp_Paciente` INT, IN `sp_Estado` VARCHAR(30))  BEGIN
 select C.idCita as id, r.fecharegistro AS start, CONCAT("Medico: ", me.nombre," ", me.apellido, " ", "Actividad: ",a.concepto, " Medicamento: ",m.nombre, " Numero Hora: ",r.numerohora, " Numero dia: ",r.numerodia) as title from cita as c INNER JOIN actividades as a ON c.idCita = a.Cita INNER JOIN recetasmedicas as r ON c.idCita = r.Cita INNER JOIN medicamentos as m ON r.Medicamentos = m.idMedicamento INNER JOIN horario as h ON c.Horario = h.idHorario INNER JOIN medicos as me ON h.Medico= me.idMedico WHERE c.estado = sp_Estado and c.Paciente = sp_Paciente;
 END$$
 
-DROP PROCEDURE IF EXISTS `sp_ListaGanglioslinfaticos`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_ListaGanglioslinfaticos` ()  BEGIN
    SELECT *
    FROM ganglioslinfaticos;
 END$$
 
-DROP PROCEDURE IF EXISTS `sp_ListaMetastasis`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_listaMedicamentosId` (IN `sp_Medicamento` INT)  BEGIN
+select * from medicamentos WHERE idMedicamento = sp_Medicamento;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_ListaMetastasis` ()  BEGIN
    SELECT *
    FROM metastasis;
 END$$
 
-DROP PROCEDURE IF EXISTS `sp_ListaMunicipios`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_ListaMunicipios` ()  BEGIN
 	 SELECT * FROM municipios;
 END$$
 
-DROP PROCEDURE IF EXISTS `sp_listarActividadesPacientes`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_listarActividadesPacientes` (IN `sp_Paciente` INT)  BEGIN
 select * from actividades as a INNER JOIN etapatumor as et ON a.Etapatumor=et.idEtapatumor WHERE a.Cita = sp_Paciente;
 END$$
 
-DROP PROCEDURE IF EXISTS `sp_ListarAuxiliares`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_ListarAuxiliares` ()  BEGIN
 	SELECT * FROM auxiliares;
  END$$
 
-DROP PROCEDURE IF EXISTS `sp_listarAuxiliaresMedicos`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_listarAuxiliaresMedicos` (IN `sp_Medico` INT)  BEGIN
 	select *  from auxiliares where Medico = sp_Medico;
  END$$
 
-DROP PROCEDURE IF EXISTS `sp_listarAuxiliarPorId`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_listarAuxiliarPorId` (IN `sp_idAuxiliar` INT)  BEGIN
 	SELECT * FROM auxiliares WHERE idAuxiliar = sp_idAuxiliar; 
 END$$
 
-DROP PROCEDURE IF EXISTS `sp_listarCitaEstado`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_listarCitaEstado` (IN `sp_Medico` INT, IN `sp_estado` VARCHAR(35))  BEGIN
 	select P.idPaciente, CONCAT(p.nombre, " ", p.apellido) as nombre, h.fecha, c.estado, c.idCita from cita as c INNER JOIN horario as h ON c.Horario = h.idHorario INNER JOIN pacientes as p ON c.Paciente = p.idPaciente INNER JOIN medicos as m ON h.Medico = m.idMedico where m.idMedico = sp_Medico and c.estado = sp_estado;
 END$$
 
-DROP PROCEDURE IF EXISTS `sp_listarCitas`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_listarCitas` (IN `sp_Paciente` INT, IN `sp_estado` VARCHAR(35))  BEGIN
 select * from cita as c INNER JOIN horario as h ON c.Horario = h.idHorario INNER JOIN espacialidades as e ON h.Especialidad = e.idEspecialidades WHERE c.Paciente = sp_Paciente and c.estado = sp_estado;
 END$$
 
-DROP PROCEDURE IF EXISTS `sp_listarDepartamentos`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_listarDepartamentos` ()  BEGIN
 select * from departamentos;
 END$$
 
-DROP PROCEDURE IF EXISTS `sp_listarEspecialidad`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_listarEspecialidad` (IN `sp_Medico` INT)  BEGIN
 select idEspecialidades, especialidad from espacialidades WHERE Medico = sp_Medico;
 END$$
 
-DROP PROCEDURE IF EXISTS `sp_listarEtapaTumor`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_listarEtapaTumor` ()  BEGIN
 	SELECT et.idEtapatumor, et.nombreetapa, CONCAT(p.identificacion, ' ', p.nombre, ' ', p.apellido) AS 'paciente', 
 		   CONCAT(tp.codigotp, ' ', nombretp) AS 'tumorprimario', CONCAT(gl.codigogl, ' ', gl.nombregl) as 'ganglioslinfaticos',
@@ -223,38 +214,39 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_listarEtapaTumor` ()  BEGIN
     INNER JOIN clasificaciontumor ct ON et.Clasificaciontumor = ct.idClasificaciontumor;
 END$$
 
-DROP PROCEDURE IF EXISTS `sp_listarEtapatumores`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_listarEtapatumores` (IN `sp_Paciente` INT)  BEGIN
 select * from etapatumor where Paciente = sp_Paciente;
 END$$
 
-DROP PROCEDURE IF EXISTS `sp_ListarHv`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_listarEtapaTumorId` (IN `sp_idEtapatumor` INT)  BEGIN
+select * from etapatumor WHERE idEtapatumor = sp_idEtapatumor;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_ListarHv` ()  BEGIN
 	 SELECT * FROM hv;
 END$$
 
-DROP PROCEDURE IF EXISTS `sp_listarMedicamentos`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_listarMedicamentos` ()  BEGIN
 select * from medicamentos;
 END$$
 
-DROP PROCEDURE IF EXISTS `sp_listarMedicamentosPaciente`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_listarMedicamentosPaciente` (IN `sp_Cita` INT)  BEGIN
 	select * from recetasmedicas as rm INNER JOIN medicamentos as m ON rm.Medicamentos = m.idMedicamento INNER JOIN etapatumor as et ON rm.Etapatumor = et.idEtapatumor WHERE rm.Cita = sp_Cita;
 END$$
 
-DROP PROCEDURE IF EXISTS `sp_listarMedicos`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_listarMedicos` (IN `sp_estado` INT(1))  BEGIN
 	SELECT * FROM Medicos as M, espacialidades as E WHERE M.idMedico = E.Medico AND estado = sp_estado;
    END$$
 
-DROP PROCEDURE IF EXISTS `sp_ListaTumorprimario`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_listarPacienteId` (IN `sp_Paciente` INT)  BEGIN
+select * from pacientes WHERE idPaciente = sp_Paciente;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_ListaTumorprimario` ()  BEGIN
    SELECT *
    FROM tumorprimario;
 END$$
 
-DROP PROCEDURE IF EXISTS `sp_LoginAuxiliar`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_LoginAuxiliar` (IN `sp_identificacion` INT(20), IN `sp_clave` VARCHAR(60), IN `sp_estado` INT(1), OUT `sp_login` CHAR(2))  IF EXISTS(SELECT identificacion, clave, estado FROM auxiliares WHERE identificacion = sp_identificacion AND clave = sp_clave AND estado = sp_estado ) THEN
 	BEGIN
 		select 'si' into sp_login;
@@ -265,32 +257,31 @@ ELSE
     END;
 END IF$$
 
-DROP PROCEDURE IF EXISTS `sp_municipioxDepartamento`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_municipioxDepartamento` (IN `sp_Departamento` INT)  BEGIN
 SELECT * FROM municipios WHERE Departamento = sp_Departamento;
 END$$
 
-DROP PROCEDURE IF EXISTS `sp_regClasificaciontumor`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_NombreConsultorios` ()  BEGIN
+select * from consultorio;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_regClasificaciontumor` (IN `sp_tipotumores` INT(11), IN `sp_nombreclasificacion` VARCHAR(35), IN `sp_detalle` VARCHAR(255))  BEGIN
 	INSERT INTO clasificaciontumor (Tipotumores, nombreclasificacion, detalle) 
     VALUES (sp_tipotumores, sp_nombreclasificacion, sp_detalle);
     select 'ok' as exito ;
 END$$
 
-DROP PROCEDURE IF EXISTS `sp_regEtapatumor`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_regEtapatumor` (IN `sp_nombreetapa` VARCHAR(25), IN `sp_paciente` INT(11), IN `sp_tumorprimario` INT(11), IN `sp_ganglioslinfaticos` INT(11), IN `sp_metastasis` INT(11), IN `sp_clasificaciontumor` INT(11), IN `sp_diagnostico` VARCHAR(255))  BEGIN
 	INSERT INTO etapatumor (nombreetapa, Paciente, Tumorprimario, Ganglioslinfaticos, Metastasis, Clasificaciontumor, diagnostico) 
     VALUES (sp_nombreetapa, sp_paciente, sp_tumorprimario, sp_ganglioslinfaticos, sp_metastasis, sp_clasificaciontumor, sp_diagnostico);
     select 'ok' as exito ;
 END$$
 
-DROP PROCEDURE IF EXISTS `sp_RegisterHv`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_RegisterHv` (IN `sp_foto` VARCHAR(120), IN `sp_Medico` INT(11), IN `sp_trayectoria` VARCHAR(255), IN `sp_experienciaprofesional` VARCHAR(255), IN `sp_logrosacademicos` VARCHAR(255), IN `sp_publicacionesconferencias` VARCHAR(255), IN `sp_idiomas` VARCHAR(30))  BEGIN
 	INSERT hv (foto, Medico, trayectoria, experienciaprofesional, logrosacademicos, publicacionesconferencias, idiomas)
 	VALUES (sp_foto, sp_Medico, sp_trayectoria, sp_experienciaprofesional, sp_logrosacademicos, sp_publicacionesconferencias, sp_idiomas);
 END$$
 
-DROP PROCEDURE IF EXISTS `sp_RegisterMedico`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_RegisterMedico` (IN `sp_tipoidentificacion` CHAR(2), IN `sp_identificacion` BIGINT, IN `sp_departamentoidentificacion` VARCHAR(35), IN `sp_nombre` VARCHAR(25), IN `sp_apellido` VARCHAR(35), IN `sp_apellidocasada` VARCHAR(35), IN `sp_genero` CHAR(1), IN `sp_fechanacimiento` DATE, IN `sp_tiposangre` CHAR(4), IN `sp_telefono` BIGINT(7), IN `sp_celular` BIGINT(10), IN `sp_estadocivil` VARCHAR(35), IN `sp_religion` VARCHAR(50), IN `sp_Departamento` INT(2), IN `sp_Municipio` INT(6), IN `sp_domicilio` VARCHAR(120), IN `sp_email` VARCHAR(200), IN `sp_clave` VARCHAR(60), IN `sp_estado` INT(1))  BEGIN
 	INSERT INTO medicos (tipoidentificacion, identificacion, departamentoidentificacion, nombre, apellido, apellidocasada,
 						 genero, fechanacimiento, tiposangre, telefono, celular, estadocivil, religion,
@@ -301,7 +292,6 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_RegisterMedico` (IN `sp_tipoiden
 	SELECT 'registro ingresado con exito' as response;
 END$$
 
-DROP PROCEDURE IF EXISTS `sp_RegisterPaciente`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_RegisterPaciente` (IN `sp_tipoidentificacion` CHAR(2), IN `sp_identificacion` BIGINT, IN `sp_departamentoidentificacion` VARCHAR(35), IN `sp_nombre` VARCHAR(25), IN `sp_apellido` VARCHAR(35), IN `sp_apellidocasada` VARCHAR(35), IN `sp_genero` CHAR(1), IN `sp_fechanacimiento` DATE, IN `sp_tiposangre` CHAR(4), IN `sp_telefono` BIGINT(7), IN `sp_celular` BIGINT(10), IN `sp_estadocivil` VARCHAR(35), IN `sp_ocupacion` VARCHAR(80), IN `sp_religion` VARCHAR(50), IN `sp_Departamento` INT(2), IN `sp_Municipio` INT(6), IN `sp_domicilio` VARCHAR(120), IN `sp_email` VARCHAR(200), IN `sp_clave` VARCHAR(60))  BEGIN
 	INSERT INTO Pacientes (tipoidentificacion, identificacion, departamentoidentificacion, nombre, apellido, apellidocasada,
 						   genero, fechanacimiento, tiposangre, telefono, celular, estadocivil, ocupacion, religion,
@@ -312,14 +302,12 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_RegisterPaciente` (IN `sp_tipoid
 	SELECT 'registro ingresado con exito' as response;
  END$$
 
-DROP PROCEDURE IF EXISTS `sp_registrarActividad`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_registrarActividad` (IN `sp_Cita` INT, IN `sp_Etapatumo` INT, IN `sp_concepto` VARCHAR(255), IN `sp_estado` VARCHAR(35), IN `sp_numerohora` INT, IN `sp_numerodia` INT)  BEGIN
 	INSERT INTO actividades (idActividad, Cita, Etapatumor, concepto, estado, fecharegistro, numerohora, numerodia) 
 						values(0, sp_Cita, sp_Etapatumo, sp_concepto, sp_estado, now(), sp_numerohora,sp_numerodia);
                     select 'ok' as exito;
 END$$
 
-DROP PROCEDURE IF EXISTS `sp_RegistrarAuxiliar`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_RegistrarAuxiliar` (IN `sp_codigo` VARCHAR(60), IN `sp_Rol` VARCHAR(60), IN `sp_tipoidentificacion` CHAR(2), IN `sp_identificacion` BIGINT(20), IN `sp_nombre` VARCHAR(25), IN `sp_apellido` VARCHAR(35), IN `sp_apellidocasada` VARCHAR(35), IN `sp_genero` CHAR(1), IN `sp_fechanacimiento` DATE, IN `sp_tiposangre` CHAR(4), IN `sp_telefono` BIGINT(7), IN `sp_celular` BIGINT(10), IN `sp_estadocivil` VARCHAR(35), IN `sp_ocupacion` VARCHAR(80), IN `sp_religion` VARCHAR(50), IN `sp_pais` VARCHAR(35), IN `sp_departamento` VARCHAR(35), IN `sp_municipio` VARCHAR(50), IN `sp_domicilio` VARCHAR(120), IN `sp_email` VARCHAR(200), IN `sp_clave` VARCHAR(60), IN `sp_fecharegistro` DATE, IN `sp_estado` INT)  IF NOT EXISTS (SELECT tipoidentificacion, identificacion FROM auxiliares WHERE tipoidentificacion = sp_tipoidentificacion AND identificacion = sp_identificacion )THEN
 	 BEGIN		
 		INSERT INTO auxiliares (idAuxiliar, codigo, Rol, tipoidentificacion, identificacion, nombre, apellido, apellidocasada, genero, fechanacimiento, tiposangre, telefono, celular, estadocivil, ocupacion, religion, pais, departamento, municipio, domicilio, email, clave, fecharegistro, estado) 
@@ -332,7 +320,6 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_RegistrarAuxiliar` (IN `sp_codig
 	 END;
  END IF$$
 
-DROP PROCEDURE IF EXISTS `sp_registrarAuxiliarMedico`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_registrarAuxiliarMedico` (IN `sp_Medico` INT(11), IN `sp_Rol` INT(11), IN `sp_tipoidentificacion` CHAR(2), IN `sp_identificacion` BIGINT(20), IN `sp_nombre` VARCHAR(25), IN `sp_apellido` VARCHAR(35), IN `sp_apellidocasada` VARCHAR(35), IN `sp_genero` CHAR(1), IN `sp_fechanacimiento` DATE, IN `sp_tiposangre` CHAR(4), IN `sp_telefono` BIGINT(7), IN `sp_celular` BIGINT(10), IN `sp_estadocivil` VARCHAR(35), IN `sp_ocupacion` VARCHAR(80), IN `sp_religion` VARCHAR(50), IN `sp_pais` VARCHAR(35), IN `sp_departamento` VARCHAR(50), IN `sp_municipio` VARCHAR(60), IN `sp_domicilio` VARCHAR(120), IN `sp_email` VARCHAR(200), IN `sp_clave` VARCHAR(60), IN `sp_estado` INT(1), IN `sp_cancatTipoIndentificacion` VARCHAR(20))  IF NOT EXISTS (SELECT Rol, CONCAT(tipoidentificacion,identificacion) AS identificacion FROM auxiliares WHERE Rol = sp_Rol AND CONCAT(tipoidentificacion,identificacion) = sp_cancatTipoIndentificacion)THEN
 	 BEGIN		
 		INSERT INTO auxiliares (idAuxiliar, Medico, Rol, tipoidentificacion, identificacion, nombre, apellido, apellidocasada, genero, fechanacimiento, tiposangre, telefono, celular, estadocivil, ocupacion, religion, pais, departamento, municipio, domicilio, email, clave, fecharegistro, estado) 
@@ -345,7 +332,6 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_registrarAuxiliarMedico` (IN `sp
 	 END;
  END IF$$
 
-DROP PROCEDURE IF EXISTS `sp_RegistrarCita`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_RegistrarCita` (IN `sp_Paciente` INT, IN `sp_Horario` INT, IN `sp_Concepto` VARCHAR(100), IN `sp_Estado` VARCHAR(35))  BEGIN
 	IF NOT EXISTS (SELECT Paciente, Horario, estado FROM cita WHERE Paciente = sp_Paciente AND  Horario = sp_Horario AND estado = sp_Estado )THEN
 		 BEGIN
@@ -362,7 +348,6 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_RegistrarCita` (IN `sp_Paciente`
      
  END$$
 
-DROP PROCEDURE IF EXISTS `sp_registrarEspecilidad`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_registrarEspecilidad` (IN `sp_Medico` INT, IN `sp_especialidad` VARCHAR(60), IN `sp_detalle` VARCHAR(200))  IF NOT EXISTS (SELECT Medico, especialidad FROM espacialidades WHERE Medico = sp_Medico AND especialidad = sp_especialidad )THEN
 	 BEGIN		
 		INSERT INTO espacialidades (idEspecialidades, Medico, especialidad, detalle) 
@@ -375,7 +360,6 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_registrarEspecilidad` (IN `sp_Me
 	 END;
  END IF$$
 
-DROP PROCEDURE IF EXISTS `sp_registrarHorario`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_registrarHorario` (IN `sp_Medico` INT, IN `sp_Consultorio` INT, IN `sp_Especialidad` INT, IN `sp_fecha` DATE, IN `sp_horainicio` TIME, IN `sp_horafinal` TIME)  IF NOT EXISTS (
 	SELECT * from horario where (medico = sp_Medico and Consultorio = sp_Consultorio and Especialidad = sp_Especialidad and fecha = sp_fecha and horainicio <= horainicio and horainicio <= horafinal) AND 
     (Medico = sp_Medico and Consultorio = sp_Consultorio and Especialidad = sp_Especialidad and fecha = sp_fecha and horafinal >= sp_horainicio and horafinal >= horafinal) AND 
@@ -393,28 +377,24 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_registrarHorario` (IN `sp_Medico
 	 END;
  END IF$$
 
-DROP PROCEDURE IF EXISTS `sp_registrarMedicamento`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_registrarMedicamento` (IN `sp_Cita` INT, IN `sp_Medicamentos` INT, IN `sp_Etapatumor` INT, IN `sp_concepto` VARCHAR(255), IN `sp_numerohora` INT, IN `sp_numerodia` INT)  BEGIN
 INSERT INTO recetasmedicas (idRecetasmedicas, Cita, Medicamentos, Etapatumor, concepto, fecharegistro, numerohora, numerodia) 
 						VALUES (0, sp_Cita, sp_Medicamentos, sp_Etapatumor, sp_concepto, now(), sp_numerohora, sp_numerodia);
                         select 'ok' as exito;
 END$$
 
-DROP PROCEDURE IF EXISTS `sp_registroconsultorio`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_registroconsultorio` (IN `sp_nombre` VARCHAR(180), IN `sp_departamento` VARCHAR(50), IN `sp_municipio` VARCHAR(60), IN `sp_domicilio` VARCHAR(120))  BEGIN
 	INSERT INTO consultorio (nombre, departamento, municipio, domicilio)
 	VALUES (sp_nombre, sp_departamento, sp_municipio, sp_domicilio);
     select 'ok' as exito ;
  END$$
 
-DROP PROCEDURE IF EXISTS `sp_regTipotumor`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_regTipotumor` (IN `sp_codigotTumor` VARCHAR(4), IN `sp_nombreTumor` VARCHAR(200), IN `sp_detalle` VARCHAR(255))  BEGIN
 	INSERT INTO tipotumores (codigotTumor, nombreTumor, detalle) 
     VALUES (sp_codigotTumor, sp_nombreTumor, sp_detalle);
     select 'ok' as exito ;
 END$$
 
-DROP PROCEDURE IF EXISTS `sp_rol`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_rol` ()  BEGIN
 select * from roles;
 END$$
@@ -427,7 +407,6 @@ DELIMITER ;
 -- Estructura de tabla para la tabla `actividades`
 --
 
-DROP TABLE IF EXISTS `actividades`;
 CREATE TABLE `actividades` (
   `idActividad` int(11) NOT NULL,
   `Cita` int(11) NOT NULL,
@@ -456,7 +435,6 @@ INSERT INTO `actividades` (`idActividad`, `Cita`, `Etapatumor`, `concepto`, `est
 -- Estructura de tabla para la tabla `administradores`
 --
 
-DROP TABLE IF EXISTS `administradores`;
 CREATE TABLE `administradores` (
   `idAdministrador` int(11) NOT NULL,
   `Rol` int(11) NOT NULL DEFAULT '1',
@@ -489,7 +467,6 @@ CREATE TABLE `administradores` (
 -- Estructura de tabla para la tabla `auxiliares`
 --
 
-DROP TABLE IF EXISTS `auxiliares`;
 CREATE TABLE `auxiliares` (
   `idAuxiliar` int(11) NOT NULL,
   `Medico` int(11) NOT NULL,
@@ -530,7 +507,6 @@ INSERT INTO `auxiliares` (`idAuxiliar`, `Medico`, `Rol`, `tipoidentificacion`, `
 -- Estructura de tabla para la tabla `cita`
 --
 
-DROP TABLE IF EXISTS `cita`;
 CREATE TABLE `cita` (
   `idCita` int(11) NOT NULL,
   `Paciente` int(11) NOT NULL,
@@ -562,7 +538,6 @@ INSERT INTO `cita` (`idCita`, `Paciente`, `Horario`, `concepto`, `estado`, `fech
 -- Estructura de tabla para la tabla `clasificaciontumor`
 --
 
-DROP TABLE IF EXISTS `clasificaciontumor`;
 CREATE TABLE `clasificaciontumor` (
   `idClasificaciontumor` int(11) NOT NULL,
   `Tipotumores` int(11) NOT NULL,
@@ -583,7 +558,6 @@ INSERT INTO `clasificaciontumor` (`idClasificaciontumor`, `Tipotumores`, `nombre
 -- Estructura de tabla para la tabla `consultorio`
 --
 
-DROP TABLE IF EXISTS `consultorio`;
 CREATE TABLE `consultorio` (
   `idConsultorio` int(11) NOT NULL,
   `nombre` varchar(180) COLLATE utf8_spanish_ci NOT NULL,
@@ -598,8 +572,8 @@ CREATE TABLE `consultorio` (
 --
 
 INSERT INTO `consultorio` (`idConsultorio`, `nombre`, `pais`, `departamento`, `municipio`, `domicilio`) VALUES
-(1, 'PRINCIPAL', 'COLOMBIA', 1, 1, 'CRA 58'),
-(2, 'CONSUL', 'COLOMBIA', 1, 1, 'CENTRO'),
+(1, 'PRINCIPAL', 'COLOMBIA', 11, 20, 'CRA 58'),
+(2, 'CONSULADOR', 'COLOMBIA', 6, 11, 'CENTRO'),
 (3, 'CONSULTORIO ONCOLOGICO DEL CARIBE', 'COLOMBIA', 5, 166, 'BARRIO BOCAGRANDE MZ 7');
 
 -- --------------------------------------------------------
@@ -608,7 +582,6 @@ INSERT INTO `consultorio` (`idConsultorio`, `nombre`, `pais`, `departamento`, `m
 -- Estructura de tabla para la tabla `departamentos`
 --
 
-DROP TABLE IF EXISTS `departamentos`;
 CREATE TABLE `departamentos` (
   `idDepartamento` int(2) NOT NULL,
   `departamento` varchar(80) COLLATE utf8_spanish_ci NOT NULL
@@ -658,7 +631,6 @@ INSERT INTO `departamentos` (`idDepartamento`, `departamento`) VALUES
 -- Estructura de tabla para la tabla `espacialidades`
 --
 
-DROP TABLE IF EXISTS `espacialidades`;
 CREATE TABLE `espacialidades` (
   `idEspecialidades` int(11) NOT NULL,
   `Medico` int(11) NOT NULL,
@@ -682,7 +654,6 @@ INSERT INTO `espacialidades` (`idEspecialidades`, `Medico`, `especialidad`, `det
 -- Estructura de tabla para la tabla `etapatumor`
 --
 
-DROP TABLE IF EXISTS `etapatumor`;
 CREATE TABLE `etapatumor` (
   `idEtapatumor` int(11) NOT NULL,
   `nombreetapa` varchar(25) COLLATE utf8_spanish_ci NOT NULL,
@@ -700,7 +671,8 @@ CREATE TABLE `etapatumor` (
 
 INSERT INTO `etapatumor` (`idEtapatumor`, `nombreetapa`, `Paciente`, `Tumorprimario`, `Ganglioslinfaticos`, `Metastasis`, `Clasificaciontumor`, `diagnostico`) VALUES
 (4, 'ETAPA DEMO', 3, 2, 3, 3, 2, 'dEMO ETAPa'),
-(5, 'ETAPA GRAVE', 3, 9, 5, 3, 2, 'SIN DETALLE');
+(5, 'ETAPA GRAVE', 3, 9, 5, 3, 2, 'SIN DETALLE'),
+(6, 'ETAPA INICIAL', 3, 1, 2, 2, 2, 'SIN DETALLE ALGUNO');
 
 -- --------------------------------------------------------
 
@@ -708,7 +680,6 @@ INSERT INTO `etapatumor` (`idEtapatumor`, `nombreetapa`, `Paciente`, `Tumorprima
 -- Estructura de tabla para la tabla `ganglioslinfaticos`
 --
 
-DROP TABLE IF EXISTS `ganglioslinfaticos`;
 CREATE TABLE `ganglioslinfaticos` (
   `idGanglioslinfaticos` int(11) NOT NULL,
   `codigogl` varchar(4) COLLATE utf8_spanish_ci NOT NULL,
@@ -733,7 +704,6 @@ INSERT INTO `ganglioslinfaticos` (`idGanglioslinfaticos`, `codigogl`, `nombregl`
 -- Estructura de tabla para la tabla `horario`
 --
 
-DROP TABLE IF EXISTS `horario`;
 CREATE TABLE `horario` (
   `idHorario` int(11) NOT NULL,
   `Medico` int(11) NOT NULL,
@@ -750,8 +720,8 @@ CREATE TABLE `horario` (
 
 INSERT INTO `horario` (`idHorario`, `Medico`, `Consultorio`, `Especialidad`, `fecha`, `horainicio`, `horafinal`) VALUES
 (3, 1, 1, 1, '2018-04-20', '07:00:00', '12:00:00'),
-(4, 1, 1, 2, '2018-04-30', '09:00:00', '11:00:00'),
-(5, 1, 1, 6, '2018-04-30', '07:00:30', '10:30:00');
+(4, 1, 2, 4, '2018-04-30', '09:00:00', '11:00:00'),
+(5, 1, 3, 6, '2018-04-30', '07:00:30', '10:30:00');
 
 -- --------------------------------------------------------
 
@@ -759,7 +729,6 @@ INSERT INTO `horario` (`idHorario`, `Medico`, `Consultorio`, `Especialidad`, `fe
 -- Estructura de tabla para la tabla `hv`
 --
 
-DROP TABLE IF EXISTS `hv`;
 CREATE TABLE `hv` (
   `idHv` int(11) NOT NULL,
   `foto` varchar(120) COLLATE utf8_spanish_ci DEFAULT 'NO TIENE',
@@ -777,7 +746,6 @@ CREATE TABLE `hv` (
 -- Estructura de tabla para la tabla `medicamentos`
 --
 
-DROP TABLE IF EXISTS `medicamentos`;
 CREATE TABLE `medicamentos` (
   `idMedicamento` int(11) NOT NULL,
   `codigomaterial` varchar(35) COLLATE utf8_spanish_ci NOT NULL,
@@ -795,8 +763,8 @@ CREATE TABLE `medicamentos` (
 --
 
 INSERT INTO `medicamentos` (`idMedicamento`, `codigomaterial`, `ean`, `nombre`, `presentacion`, `viaadministracion`, `disis`, `efectosadversos`, `indicaciones`) VALUES
-(1, '0003', 123112, 'MEDICAMENTO DE PRUEBA', 'PASTILLA', 'ORAL', '1.00', 'NINGUNO', 'NINGUNO'),
-(2, 'xsasa123221', 123333323222, 'ACETAMINOFEN', 'TABLETAS', 'ORAL', '1.50', 'NINGUNO', 'TOMAR CADA 2 HORAS');
+(1, '0003', 123112, 'MEDICAMENTO DE PRUEB', 'PASTILLA', 'ORAL', '1.00', 'NINGUNO2222', 'NINGUNO1'),
+(2, 'xsasa123221', 123333323222, 'ACETAMINOFEN', 'TABLETAS', 'ORAL', '1.50', 'NINGUNO23', 'TOMAR CADA 2 HORAS');
 
 -- --------------------------------------------------------
 
@@ -804,7 +772,6 @@ INSERT INTO `medicamentos` (`idMedicamento`, `codigomaterial`, `ean`, `nombre`, 
 -- Estructura de tabla para la tabla `medicos`
 --
 
-DROP TABLE IF EXISTS `medicos`;
 CREATE TABLE `medicos` (
   `idMedico` int(11) NOT NULL,
   `Rol` int(11) NOT NULL DEFAULT '3',
@@ -845,7 +812,6 @@ INSERT INTO `medicos` (`idMedico`, `Rol`, `tipoidentificacion`, `identificacion`
 -- Estructura de tabla para la tabla `metastasis`
 --
 
-DROP TABLE IF EXISTS `metastasis`;
 CREATE TABLE `metastasis` (
   `idMetastasis` int(11) NOT NULL,
   `codigom` varchar(4) COLLATE utf8_spanish_ci NOT NULL,
@@ -868,7 +834,6 @@ INSERT INTO `metastasis` (`idMetastasis`, `codigom`, `nombrem`, `detalle`) VALUE
 -- Estructura de tabla para la tabla `municipios`
 --
 
-DROP TABLE IF EXISTS `municipios`;
 CREATE TABLE `municipios` (
   `idMunicipio` int(6) NOT NULL,
   `municipio` varchar(80) COLLATE utf8_spanish_ci NOT NULL,
@@ -1989,7 +1954,6 @@ INSERT INTO `municipios` (`idMunicipio`, `municipio`, `Departamento`) VALUES
 -- Estructura de tabla para la tabla `pacientes`
 --
 
-DROP TABLE IF EXISTS `pacientes`;
 CREATE TABLE `pacientes` (
   `idPaciente` int(11) NOT NULL,
   `Rol` int(11) NOT NULL DEFAULT '2',
@@ -2031,7 +1995,6 @@ INSERT INTO `pacientes` (`idPaciente`, `Rol`, `tipoidentificacion`, `identificac
 -- Estructura de tabla para la tabla `recetasmedicas`
 --
 
-DROP TABLE IF EXISTS `recetasmedicas`;
 CREATE TABLE `recetasmedicas` (
   `idRecetasmedicas` int(11) NOT NULL,
   `Cita` int(11) NOT NULL,
@@ -2059,7 +2022,6 @@ INSERT INTO `recetasmedicas` (`idRecetasmedicas`, `Cita`, `Medicamentos`, `Etapa
 -- Estructura de tabla para la tabla `roles`
 --
 
-DROP TABLE IF EXISTS `roles`;
 CREATE TABLE `roles` (
   `idRol` int(11) NOT NULL,
   `rol` varchar(35) COLLATE utf8_spanish_ci NOT NULL,
@@ -2086,7 +2048,6 @@ INSERT INTO `roles` (`idRol`, `rol`, `detalle`) VALUES
 -- Estructura de tabla para la tabla `signosvitales`
 --
 
-DROP TABLE IF EXISTS `signosvitales`;
 CREATE TABLE `signosvitales` (
   `idSignosvitales` int(11) NOT NULL,
   `Paciente` int(11) NOT NULL,
@@ -2102,7 +2063,6 @@ CREATE TABLE `signosvitales` (
 -- Estructura de tabla para la tabla `tipotumores`
 --
 
-DROP TABLE IF EXISTS `tipotumores`;
 CREATE TABLE `tipotumores` (
   `idTipotumor` int(11) NOT NULL,
   `codigotTumor` varchar(4) COLLATE utf8_spanish_ci NOT NULL,
@@ -2132,7 +2092,6 @@ INSERT INTO `tipotumores` (`idTipotumor`, `codigotTumor`, `nombreTumor`, `detall
 -- Estructura de tabla para la tabla `tumorprimario`
 --
 
-DROP TABLE IF EXISTS `tumorprimario`;
 CREATE TABLE `tumorprimario` (
   `idTumorprimario` int(11) NOT NULL,
   `codigotp` varchar(4) COLLATE utf8_spanish_ci NOT NULL,
@@ -2385,7 +2344,7 @@ ALTER TABLE `espacialidades`
 -- AUTO_INCREMENT de la tabla `etapatumor`
 --
 ALTER TABLE `etapatumor`
-  MODIFY `idEtapatumor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `idEtapatumor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `ganglioslinfaticos`

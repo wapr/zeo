@@ -4,13 +4,11 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/xampp/htdocs/zeo/Vistas/Recursos/js/table.js</file>
-            <file>file:/C:/xampp/htdocs/zeo/Dao/IGeneral.php</file>
-            <file>file:/C:/xampp/htdocs/zeo/Vistas/Medico/medicamentos.php</file>
+            <file>file:/C:/xampp/htdocs/zeo/Vistas/Medico/js/consultorio.js</file>
+            <file>file:/C:/xampp/htdocs/zeo/Vistas/Medico/js/gestionPaciente.js</file>
             <file>file:/C:/xampp/htdocs/zeo/Vistas/Medico/consultorios.php</file>
-            <file>file:/C:/xampp/htdocs/zeo/Vistas/Medico/js/medico.js</file>
             <file>file:/C:/xampp/htdocs/zeo/Controladores/ControladorGeneral.php</file>
-            <file>file:/C:/xampp/htdocs/zeo/Controladores/MedicosControlador.php</file>
-            <file>file:/C:/xampp/htdocs/zeo/Vistas/Medico/regmedicamento.php</file>
+            <file>file:/C:/xampp/htdocs/zeo/Vistas/Medico/gestionpaciente.php</file>
         </group>
     </open-files>
 </project-private>

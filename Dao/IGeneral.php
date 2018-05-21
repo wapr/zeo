@@ -3,6 +3,7 @@
  *
  * @author Willian
  */
+
 interface IGeneral {
     
     public function RegistrarPaciente(Pacientes $pacientes);
@@ -24,11 +25,19 @@ interface IGeneral {
     public function ListaClasificaciontumor();
     public function ListaTipotumor();
     public function ListaMedicamentos();
+    public function ListaConsultorios();
+    public function PacientesPorId($idPaciente);
+    public function ListaMedicamentosId($idMedicamento);
     public function iReportCitaPaciente();
     public function iReportAuxiliarMedico();
     public function iReportPaciente();
     public function iReportActividades();
     public function iReportMedicamentos();
+    public function ActualizarMedicamento($datos);
+    public function ListarConsultorioId($idConsultorio);
+    public function ActualizarConsultorio($datos);
+    public function ListarEtapaTumorId($idEtapaTumor);
+    public function ActualizarEtapaTumor($datos);
 
 }
 

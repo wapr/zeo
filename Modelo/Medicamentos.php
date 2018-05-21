@@ -16,7 +16,7 @@ class Medicamentos {
     private $efectosadversos;
     private $indicaciones;
     
-    function __Medicamentos ($idMedicamento, $codigomaterial, $ean, $nombre, $presentacion, $viaadministracion, $disis, $efectosadversos, $indicaciones) {
+    public function __Medicamentos ($idMedicamento, $codigomaterial, $ean, $nombre, $presentacion, $viaadministracion, $disis, $efectosadversos, $indicaciones) {
         $this->idMedicamento = $idMedicamento;
         $this->codigomaterial = $codigomaterial;
         $this->ean = $ean;
@@ -28,15 +28,15 @@ class Medicamentos {
         $this->indicaciones = $indicaciones;
     }
     
-    function getIdMedicamento() {
+    public function getIdMedicamento() {
         return $this->idMedicamento;
     }
 
-    function getCodigomaterial() {
+    public function getCodigomaterial() {
         return $this->codigomaterial;
     }
 
-    function getEan() {
+    public function getEan() {
         return $this->ean;
     }
 

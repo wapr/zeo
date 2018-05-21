@@ -1,4 +1,6 @@
 <?php
+require_once $_SERVER['DOCUMENT_ROOT'] . "/Zeo/Configuracion/Conexion.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/Zeo/Dao/IGeneral.php";
 /**
  * Description of ControladorGeneral
  *
@@ -9,7 +11,9 @@ class ControladorGeneral extends Conexion implements IGeneral {
     public function __construct() {
         parent::ConexionMySQLServer();
     }
-    
+    public function cotejamiento() {
+        return $this->cnn->query("SET NAMES 'utf8'");
+    }
     public function RegistrarPaciente(Pacientes $pacientes) {
          try {
             $sql = "CALL sp_RegisterPaciente (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
@@ -517,6 +521,238 @@ class ControladorGeneral extends Conexion implements IGeneral {
         }
     }
 
+    public function ListaConsultorios() {
+        try {
+            self::cotejamiento();
+            $sql = "CALL sp_Consultorios();";
+            $stmt = $this->cnn->prepare($sql);
+            
+            $stmt->execute();
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $this->result[] = $row;
+            }
+            return $this->result;
+        } catch (PDOException $e) {
+            die($e->getMessage());
+        }
+    }
+
+    public function PacientesPorId($idPaciente) {
+        try {
+            $result = array();
+            $stm = $this->cnn->prepare("CALL sp_listarPacienteId(?);");
+            $stm->bindParam(1, $idPaciente);
+            $stm->execute();
+            foreach ($stm->fetchAll(PDO::FETCH_OBJ) as $_paciente) {
+                $paciente = new Pacientes();
+                $paciente->setIdPaciente($_paciente->idPaciente);
+                $paciente->setRol($_paciente->Rol);
+                $paciente->setTipoidentificacion($_paciente->tipoidentificacion);
+                $paciente->setIdentificacion($_paciente->identificacion);
+                $paciente->setNombre($_paciente->nombre);
+                $paciente->setApellido($_paciente->apellido);
+                $paciente->setApellidocasada($_paciente->apellidocasada);
+                $paciente->setGenero($_paciente->genero);
+                $paciente->setFechanacimiento($_paciente->fechanacimiento);
+                $paciente->setTiposangre($_paciente->tiposangre);
+                $paciente->setTelefono($_paciente->telefono);
+                $paciente->setCelular($_paciente->celular);
+                $paciente->setEstadocivil($_paciente->estadocivil);
+                $paciente->setOcupacion($_paciente->ocupacion);
+                $paciente->setReligion($_paciente->religion);
+                $paciente->setPais($_paciente->pais);
+                
+                $paciente->setDomicilio($_paciente->domicilio);
+                $paciente->setEmail($_paciente->email);
+                $paciente->setClave($_paciente->clave);
+                $paciente->setFecharegistro($_paciente->fecharegistro);
+                $paciente->setEstado($_paciente->estado);
+                $result[] = $paciente;
+            }
+            return $result;
+        } catch (PDOException $e) {
+            die($e->getMessage());
+        }
+    }
+
+    public function ListaMedicamentosId($idMedicamento) {
+        try {
+            $result = array();
+            $stm = $this->cnn->prepare("CALL sp_listaMedicamentosId (?);");
+            $stm->bindParam(1, $idMedicamento);
+            $stm->execute();
+            foreach ($stm->fetchAll(PDO::FETCH_OBJ) as $_medicamentos) {
+                $medicamentos = new Medicamentos();
+                $medicamentos->setIdMedicamento($_medicamentos->idMedicamento);
+                $medicamentos->setCodigomaterial($_medicamentos->codigomaterial);
+                $medicamentos->setEan($_medicamentos->ean);
+                $medicamentos->setNombre($_medicamentos->nombre);
+                $medicamentos->setPresentacion($_medicamentos->presentacion);
+                $medicamentos->setViaadministracion($_medicamentos->viaadministracion);
+                $medicamentos->setDisis($_medicamentos->disis);
+                $medicamentos->setEfectosadversos($_medicamentos->efectosadversos);
+                $medicamentos->setIndicaciones($_medicamentos->indicaciones);
+                $result[] = $medicamentos;
+            }
+            return $result;
+        } catch (PDOException $e) {
+            die($e->getMessage());
+        }
+    }
+
+    public function ActualizarMedicamento($datos) {
+        try {
+            $sql = "CALL sp_actualizarMedicamento (?, ?, ?, ?, ?, ?, ?, ?, ?);   ";
+            $stmt = $this->cnn->prepare($sql);
+            $stmt->bindParam(1, $datos["idMedicamento"]);
+            $stmt->bindParam(2, $datos["codigomaterial"]);
+            $stmt->bindParam(3, $datos["ean"]);
+            $stmt->bindParam(4, $datos["nombre"]);
+            $stmt->bindParam(5, $datos["presentacion"]);
+            $stmt->bindParam(6, $datos["viaadministracion"]);
+            $stmt->bindParam(7, $datos["disis"]);
+            $stmt->bindParam(8, $datos["efectosadversos"]);
+            $stmt->bindParam(9, $datos["indicaciones"]);
+
+            $stmt->execute();
+            if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $this->result[] = $row;
+            }
+            return $this->result;
+        } catch (Exception $exc) {
+            echo $exc->getMessage();
+        }
+    }
+
+    public function ListarConsultorioId($idConsultorio) {
+        try {
+            $result = array();
+            $stm = $this->cnn->prepare("CALL sp_consultorioId(?);");
+            $stm->bindParam(1, $idConsultorio);
+            $stm->execute();
+            foreach ($stm->fetchAll(PDO::FETCH_OBJ) as $_consultorio) {
+                $consultorios = new Consultorio();
+                $consultorios->setIdConsultorio($_consultorio->idConsultorio);
+                $consultorios->setNombre($_consultorio->nombre);
+                $consultorios->setPais($_consultorio->pais);
+                $consultorios->setDepartamento($_consultorio->departamento);
+                $consultorios->setMunicipio($_consultorio->municipio);
+                $consultorios->setDomicilio($_consultorio->domicilio);
+                $result[] = $consultorios;
+            }
+            return $result;
+        } catch (PDOException $e) {
+            die($e->getMessage());
+        }
+    }
+
+    public function ActualizarConsultorio($datos) {
+        try {
+            $sql = "CALL sp_actualizarConsultorio (?, ?, ?, ?, ?, ?);   ";
+            $stmt = $this->cnn->prepare($sql);
+            $stmt->bindParam(1, $datos["idCOnsultorio"]);
+            $stmt->bindParam(2, $datos["nombre"]);
+            $stmt->bindParam(3, $datos["pais"]);
+            $stmt->bindParam(4, $datos["departamento"]);
+            $stmt->bindParam(5, $datos["municipio"]);
+            $stmt->bindParam(6, $datos["domicilio"]);
+
+            $stmt->execute();
+            if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $this->result[] = $row;
+            }
+            return $this->result;
+        } catch (Exception $exc) {
+            echo $exc->getMessage();
+        }
+    }
+
+    public function ListarEtapaTumorId($idEtapaTumor) {
+        try {
+            $result = array();
+            $stm = $this->cnn->prepare("CALL sp_listarEtapaTumorId (?);");
+            $stm->bindParam(1, $idEtapaTumor);
+            $stm->execute();
+            foreach ($stm->fetchAll(PDO::FETCH_OBJ) as $_etapatumor) {
+                $etapatumor = new EtapaTumor();
+                $etapatumor->setIdEtapatumor($_etapatumor->idEtapatumor);
+                $etapatumor->setNombreetapa($_etapatumor->nombreetapa);
+                $etapatumor->setPaciente($_etapatumor->paciente);
+                $etapatumor->setTumorprimario($_etapatumor->tumorprimario);
+                $etapatumor->setGanglioslinfaticos($_etapatumor->ganglioslinfaticos);
+                $etapatumor->setMetastasis($_etapatumor->metastasis);
+                $etapatumor->setClasificaciontumor($_etapatumor->nombreclasificacion);
+                $etapatumor->setDiagnostico($_etapatumor->diagnostico);
+                $result[] = $etapatumor;
+            }
+            return $result;
+        } catch (PDOException $e) {
+            die($e->getMessage());
+        }
+    }
+
+    public function ActualizarEtapaTumor($datos) {
+        try {
+            $sql = "CALL sp_ActualizarEtapaTumor (?, ?, ?, ?, ?, ?, ?, ?);   ";
+            $stmt = $this->cnn->prepare($sql);
+            $stmt->bindParam(1, $datos["idEtapaTumor"]);
+            $stmt->bindParam(2, $datos["nombre"]);
+            $stmt->bindParam(3, $datos["paciente"]);
+            $stmt->bindParam(4, $datos["tumorprimario"]);
+            $stmt->bindParam(5, $datos["ganglioslinfaticos"]);
+            $stmt->bindParam(6, $datos["metastasis"]);
+            $stmt->bindParam(7, $datos["clasificaciontumor"]);
+            $stmt->bindParam(8, $datos["diagnostico"]);
+
+            $stmt->execute();
+            if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $this->result[] = $row;
+            }
+            return $this->result;
+        } catch (Exception $exc) {
+            echo $exc->getMessage();
+        }
+    }
+
+}
+
+if(isset($_GET["listarConsultorios"]) && $_GET["listarConsultorios"]=="listar"){
+    $controller = new ControladorGeneral();
+    $r = $controller->ListaConsultorios();
+    if(count($r) != 0){
+         echo '{
+            "data": [';
+            for($i=0;$i<count($r)-1;$i++){
+            echo ' 
+              [
+                "'.($i+1).'",
+                "'.$r[$i]["nombre"].'",
+                "'.$r[$i]["pais"].'",
+                "'.$r[$i]["departamento"].'",
+                "'.$r[$i]["municipio"].'",
+                "'.$r[$i]["domicilio"].'",
+                "'.$r[$i]["idConsultorio"].'"
+              ],';
+            }
+            echo ' 
+              [
+                "'.(count($r)).'",
+                "'.$r[$i]["nombre"].'",
+                "'.$r[$i]["pais"].'",
+                "'.$r[$i]["departamento"].'",
+                "'.$r[$i]["municipio"].'",
+                "'.$r[$i]["domicilio"].'",
+                "'.$r[$i]["idConsultorio"].'"
+              ]
+            ]
+          }';
+     }else{
+         echo '{
+            "data": []
+            }';
+            
+     }
+    return;
 }
 
 ?>

@@ -4,12 +4,12 @@
 ?>
 <div class="ui segments">
     <div class="ui blue inverted segment">
-        <h4>MÓDULO DE ESPECIALIDAD</h4>
+        <h4>MÓDULO DE HORARIOS</h4>
     </div>
     <div class="ui secondary segment">
         <div class="ui segments">
             <div class="ui blue inverted segment">
-                <p>GESTION DE ESPECIALIDADES</p>
+                <p>GESTION DE HORARIOS</p>
             </div>
             <div class="ui secondary segment">
                     <div class="ui raised segment botoneraexcelpdfespecialidad ">
@@ -84,17 +84,17 @@
 <div class="ui mini modal updHorario">
     <i class="close icon"></i>
     <div class="header">
-        <h4>ACTUALIZAR ESPECIALIDAD</h4>
+        <h4>ACTUALIZAR HORARIO</h4>
     </div>
     <div class="content">
         <form class="ui form _editHorario">
             <div class="field">
               <label>Consultorio</label>
-              <select  class="ui dropdown" id="edit_select_consultorio" name="edit_select_consultorio"></select>
+              <select class="ui dropdown edit_select_consultorio" id="edit_select_consultorio" name="edit_select_consultorio"></select>
             </div>
             <div class="field">
               <label>Especialidad</label>
-              <select id="edit_select_especialidad" name="edit_select_especialidad"></select>
+              <select class="ui dropdown edit_select_especialidad" id="edit_select_especialidad" name="edit_select_especialidad"></select>
             </div>
             <div class="field">
               <label>Fecha</label>

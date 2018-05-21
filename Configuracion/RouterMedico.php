@@ -54,9 +54,18 @@ class RouterMedico {
             case 'regmedicamento':
                 include_once ('../../Vistas/Medico/' . $view . '.php');
             break;
+            case 'medicamentosactualizar':
+                include_once ('../../Vistas/Medico/' . $view . '.php');
+            break;
+            case 'consultoriosactualizar':
+                include_once ('../../Vistas/Medico/' . $view . '.php');
+            break;
+            case 'etapatumorActualizar':
+                include_once ('../../Vistas/Medico/' . $view . '.php');
+            break;
             case 'logout':
                 include_once ('../../Vistas/Medico/' . $view . '.php');
-                break;
+            break;
             default:
                 include_once ('../../Vistas/Medico/error.php');
         endswitch;

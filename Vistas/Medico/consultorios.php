@@ -16,29 +16,18 @@
         <div class="ui secondary segment">
             <button type="button" id="nuevopaciente" class="ui teal button" OnClick="location.href = 'LayoutMedico.php?load=regconsultorio'"><i class="fa fa-plus-square"></i> Nuevo consultorio</button>
             <div class="ui raised segment ">
-                <table id="tblConsultorio" class="ui selectable blue celled table " cellspacing="0" width="100%">
+                <table id="tblConsultorios" class="ui selectable blue celled table botonesAuxiliar " cellspacing="0" width="100%">
                     <thead>
                         <tr>
-                            <th>Numero</th>
-                            <th>Nombre</th>
-                            <th>Pais</th>
-                            <th>Departamento</th>
-                            <th>Municipio</th>
-                            <th>Domicilio</th>
+                             <th>#</th>
+                             <th>NOMBRE</th>
+                             <th>PAIS</th>
+                             <th>DEPARTAMENTO</th>
+                             <th>MUNICIPIO</th>
+                             <th>DOMICILIO</th>
+                             <th></th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <?php foreach ($controlconsultorio->ListaConsultorioDetallado() AS $_consultorio) : ?>
-                            <tr>
-                                <td><?php echo $_consultorio->getIdConsultorio('idConsultorio'); ?></td> 
-                                <td><?php echo $_consultorio->getNombre('nombre'); ?></td>
-                                <td><?php echo $_consultorio->getPais('pais'); ?></td>   
-                                <td><?php echo $_consultorio->getDepartamento('departamento'); ?></td>
-                                <td><?php echo $_consultorio->getMunicipio('municipio'); ?></td>
-                                <td><?php echo $_consultorio->getDomicilio('domicilio'); ?></td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
                 </table>
             </div>
         </div>

@@ -366,19 +366,16 @@ $(function(){
     });
     Horario.buttons().container().insertBefore('.botoneraexcelpdfauxiliares');
     $('#tblHorario tbody').on( 'click', 'button.btnEditarHorario', function () {
+        dropdownEditEspecialidades();
+        dropdownEditConsultorio();
         var data = Horario.row( $(this).parents('tr') ).data();
-        selectEspecialidadesEdit();
-        selectConsultoriosEdit();
-        $("#edit_select_consultorio").val(data[1])
         $("#edit_upd_fecha").val(data[3])
-        $("#edit_select_especialidad select").val(data[7])
         $("#edit_upd_horaInicio").val(data[4])
         $("#edit_upd_horaFin").val(data[5])
         $("#idHorario").val(data[6])
-        //$("#edit_select_consultorio").val(data[8])
-        $('#edit_select_consultorio').dropdown("set selected", data[8]);
+        $('.ui.dropdown.edit_select_consultorio').dropdown('set selected', data[8]);
+        $('.ui.dropdown.edit_select_especialidad').dropdown('set selected', data[7]);        
         $(".updHorario").modal("show");
-        console.log(data)
     })
     
      /*
@@ -554,24 +551,26 @@ var selectConsultorios = function(){
   });
 }
 
-var selectConsultoriosEdit = function(){
-    $.ajax({
-    type: "GET",
-    url: myApp.url +'MedicosControlador.php?medicoEspecialidades=listarConsultorios', 
-    dataType: "json",
-    success: function(data){
-        $('#edit_select_consultorio').html('');
-        //console.log(data);return;  
-      $.each(data,function(key, registro) {
-        $("#edit_select_consultorio").append('<option value='+registro.idConsultorio+'>'+registro.nombre+'</option>');
-      });        
+
+var dropdownEditConsultorio = function(){
+  $('.ui.dropdown.edit_select_consultorio')
+  .dropdown({
+    apiSettings: {
+      // this url parses query server side and returns filtered results
+      url: myApp.url +'MedicosControlador.php?dropdownConsultorio=select'
     },
-    error: function(data) {
-      alert('Ocurrio un error al cargar consultorios');
-    }
-  });
+  })
 }
 
+var dropdownEditEspecialidades = function(){
+    $('.ui.dropdown.edit_select_especialidad')
+  .dropdown({
+    apiSettings: {
+      // this url parses query server side and returns filtered results
+      url: myApp.url +'MedicosControlador.php?dropdownEspecialidad=select'
+    },
+  })
+}
 var selectEspecialidades = function(){
     $.ajax({
     type: "GET",
