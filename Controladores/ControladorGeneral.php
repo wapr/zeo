@@ -624,7 +624,48 @@ class ControladorGeneral extends Conexion implements IGeneral {
         }
     }
 
-    
+    public function ListarConsultorioId($idConsultorio) {
+        try {
+            $result = array();
+            $stm = $this->cnn->prepare("CALL sp_consultorioId(?);");
+            $stm->bindParam(1, $idConsultorio);
+            $stm->execute();
+            foreach ($stm->fetchAll(PDO::FETCH_OBJ) as $_consultorio) {
+                $consultorios = new Consultorio();
+                $consultorios->setIdConsultorio($_consultorio->idConsultorio);
+                $consultorios->setNombre($_consultorio->nombre);
+                $consultorios->setPais($_consultorio->pais);
+                $consultorios->setDepartamento($_consultorio->departamento);
+                $consultorios->setMunicipio($_consultorio->municipio);
+                $consultorios->setDomicilio($_consultorio->domicilio);
+                $result[] = $consultorios;
+            }
+            return $result;
+        } catch (PDOException $e) {
+            die($e->getMessage());
+        }
+    }
+
+    public function ActualizarConsultorio($datos) {
+        try {
+            $sql = "CALL sp_actualizarConsultorio (?, ?, ?, ?, ?, ?);   ";
+            $stmt = $this->cnn->prepare($sql);
+            $stmt->bindParam(1, $datos["idCOnsultorio"]);
+            $stmt->bindParam(2, $datos["nombre"]);
+            $stmt->bindParam(3, $datos["pais"]);
+            $stmt->bindParam(4, $datos["departamento"]);
+            $stmt->bindParam(5, $datos["municipio"]);
+            $stmt->bindParam(6, $datos["domicilio"]);
+
+            $stmt->execute();
+            if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $this->result[] = $row;
+            }
+            return $this->result;
+        } catch (Exception $exc) {
+            echo $exc->getMessage();
+        }
+    }
 
 }
 

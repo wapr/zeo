@@ -23,6 +23,7 @@ $(function(){
     
     $('#tblConsultorios tbody').on( 'click', 'button.btnEditConsultorio', function () {
         var data = consultorio.row( $(this).parents('tr') ).data();
+        window.location="LayoutMedico.php?load=consultoriosactualizar&idconsultorio="+data[6];
         console.log(data)
        
     })

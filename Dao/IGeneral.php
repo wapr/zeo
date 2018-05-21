@@ -34,6 +34,8 @@ interface IGeneral {
     public function iReportActividades();
     public function iReportMedicamentos();
     public function ActualizarMedicamento($datos);
+    public function ListarConsultorioId($idConsultorio);
+    public function ActualizarConsultorio($datos);
 
 }
 
