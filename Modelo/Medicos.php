@@ -14,6 +14,7 @@ class Medicos extends Roles {
      private $Rol;
      private $tipoidentificacion;
      private $identificacion;
+     private $departamentoidentificacion;
      private $nombre;
      private $apellido;
      private $apellidocasada;
@@ -34,13 +35,14 @@ class Medicos extends Roles {
      private $fecharegistro;
      private $estado;
      
-     public function __Medicos ($idRol, $rol, $detalle, $idMedico, $codigo, $Rol, $tipoidentificacion, $identificacion, $nombre, $apellido, $apellidocasada, $genero, $fechanacimiento, $tiposangre, $telefono, $celular, $estadocivil, $ocupacion, $religion, $pais, $departamento, $municipio, $domicilio, $email, $clave, $fecharegistro, $estado) {
+     public function __Medicos ($idRol, $rol, $detalle, $idMedico, $codigo, $Rol, $tipoidentificacion, $identificacion, $departamentoidentificacion, $nombre, $apellido, $apellidocasada, $genero, $fechanacimiento, $tiposangre, $telefono, $celular, $estadocivil, $ocupacion, $religion, $pais, $departamento, $municipio, $domicilio, $email, $clave, $fecharegistro, $estado) {
         parent::__Roles($idRol, $rol, $detalle);
         $this->idMedico = $idMedico;
         $this->codigo = $codigo;
         $this->Rol = $Rol;
         $this->tipoidentificacion = $tipoidentificacion;
         $this->identificacion = $identificacion;
+        $this->departamentoidentificacion = $departamentoidentificacion;
         $this->nombre = $nombre;
         $this->apellido = $apellido;
         $this->apellidocasada = $apellidocasada;
@@ -62,6 +64,16 @@ class Medicos extends Roles {
         $this->estado = $estado;
     }
      
+    
+    function getDepartamentoidentificacion() {
+        return $this->departamentoidentificacion;
+    }
+
+    function setDepartamentoidentificacion($departamentoidentificacion) {
+        $this->departamentoidentificacion = $departamentoidentificacion;
+    }
+
+        
      function getIdMedico() {
          return $this->idMedico;
      }

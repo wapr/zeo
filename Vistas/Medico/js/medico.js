@@ -139,7 +139,6 @@ $(function(){
     
     $('#tblAuxiliares tbody').on( 'click', 'button.btnVerAuxiliar', function () {
         var data = auxiliares.row( $(this).parents('tr') ).data();
-            //alert( data[0] );
             $(".verAuxiliar").modal("show")
             
             var datos = new FormData();
@@ -203,8 +202,8 @@ $(function(){
         municipio : 'empty',
         domicilio : 'empty',
         email: 'empty',
-        clave: ['minLength[60]', 'empty'],
-        repclave: ['minLength[60]', 'empty']
+        clave: ['minLength[4]', 'empty'],
+        repclave: ['minLength[4]', 'empty']
       },
       onSuccess : function(e){
           e.preventDefault();
@@ -377,7 +376,6 @@ $(function(){
         $('.ui.dropdown.edit_select_consultorio').dropdown('set selected', data[8]);
         $('.ui.dropdown.edit_select_especialidad').dropdown('set selected', data[7]);        
         $(".updHorario").modal("show");
-        console.log(data)
     })
     
      /*

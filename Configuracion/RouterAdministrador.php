@@ -9,22 +9,13 @@ class RouterAdministrador {
 
     public function LoadView($view) {
         switch ($view) :
-            case 'inicio':
-                include_once ('../../Vistas/Administrador/' . $view . '.php');
-                break;
             case 'logout':
                 include_once ('../../Vistas/Administrador/' . $view . '.php');
                 break;
             case 'medicos':
                 include_once ('../../Vistas/Administrador/' . $view . '.php');
             break;
-            case 'regmedico':
-                include_once ('../../Vistas/Administrador/' . $view . '.php');
-            break;
-            case 'especialidades':
-                include_once ('../../Vistas/Administrador/' . $view . '.php');
-            break;
-            case 'regespecialidad':
+            case 'regusuario':
                 include_once ('../../Vistas/Administrador/' . $view . '.php');
             break;
             default:
@@ -34,7 +25,7 @@ class RouterAdministrador {
 
     public function validateURL($variable) {
         if (empty($variable)) {
-            include_once('../../Vistas/Administrador/inicio.php');
+            include_once('../../Vistas/Administrador/regusuario.php');
         } else {
             return true;
         }

@@ -424,7 +424,101 @@ class ControladorGeneral extends Conexion implements IGeneral {
     }
 
     public function RegistrarMedicamentos(Medicamentos $medicamentos) {
-        
+        try {
+            $sql = "CALL sp_regMedicamentos (?, ?, ?, ?, ?, ?, ?, ?);";
+            $this->cnn->prepare($sql)->execute(array(
+                $medicamentos->getCodigomaterial("codigomaterial"),
+                $medicamentos->getEan("ean"),
+                $medicamentos->getNombre("nombre"),
+                $medicamentos->getPresentacion("presentacion"),
+                $medicamentos->getViaadministracion("viaadministracion"),
+                $medicamentos->getDisis("disis"),
+                $medicamentos->getEfectosadversos("efectosadversos"),
+                $medicamentos->getIndicaciones("indicaciones"))
+            );
+        } catch (PDOException $e) {
+            die($e->getMessage());
+        }
+    }
+
+    public function iReportAuxiliarMedico() {
+        try {
+            $sql = "CALL sp_ireportauxiliarmedico ();";
+            $stmt = $this->cnn->prepare($sql);
+            $stmt->execute();
+
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $this->result[] = $row;
+            }
+
+            return $this->result;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function iReportCitaPaciente() {
+        try {
+            $sql = "CALL sp_ireportcitapacientemedico ();";
+            $stmt = $this->cnn->prepare($sql);
+            $stmt->execute();
+
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $this->result[] = $row;
+            }
+
+            return $this->result;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function iReportPaciente() {
+        try {
+            $sql = "CALL sp_ireportpaciente ();";
+            $stmt = $this->cnn->prepare($sql);
+            $stmt->execute();
+
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $this->result[] = $row;
+            }
+
+            return $this->result;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function iReportActividades() {
+        try {
+            $sql = "CALL sp_ireportactividadespaciente ();";
+            $stmt = $this->cnn->prepare($sql);
+            $stmt->execute();
+
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $this->result[] = $row;
+            }
+
+            return $this->result;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function iReportMedicamentos() {
+        try {
+            $sql = "CALL sp_ireportmedicamentospaciente ();";
+            $stmt = $this->cnn->prepare($sql);
+            $stmt->execute();
+
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $this->result[] = $row;
+            }
+
+            return $this->result;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
     }
 
     public function ListaConsultorios() {
@@ -505,6 +599,32 @@ class ControladorGeneral extends Conexion implements IGeneral {
             die($e->getMessage());
         }
     }
+
+    public function ActualizarMedicamento($datos) {
+        try {
+            $sql = "CALL sp_actualizarMedicamento (?, ?, ?, ?, ?, ?, ?, ?, ?);   ";
+            $stmt = $this->cnn->prepare($sql);
+            $stmt->bindParam(1, $datos["idMedicamento"]);
+            $stmt->bindParam(2, $datos["codigomaterial"]);
+            $stmt->bindParam(3, $datos["ean"]);
+            $stmt->bindParam(4, $datos["nombre"]);
+            $stmt->bindParam(5, $datos["presentacion"]);
+            $stmt->bindParam(6, $datos["viaadministracion"]);
+            $stmt->bindParam(7, $datos["disis"]);
+            $stmt->bindParam(8, $datos["efectosadversos"]);
+            $stmt->bindParam(9, $datos["indicaciones"]);
+
+            $stmt->execute();
+            if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $this->result[] = $row;
+            }
+            return $this->result;
+        } catch (Exception $exc) {
+            echo $exc->getMessage();
+        }
+    }
+
+    
 
 }
 

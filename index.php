@@ -70,7 +70,7 @@ $err = isset($_GET['error']) ? $_GET['error'] : null;
                                             </div>
                                             <div class="form-group">
                                                 <select class="form-control" id="rol" name="rol">
-                                                    <!--<option value="1">ADMINISTRADOR</option>-->
+                                                    <option value="1">ADMINISTRADOR</option>
                                                     <option value="2">PACIENTE</option>
                                                     <option value="3">MEDICO</option>
                                                     <option value="4">AUXILIAR</option>

@@ -14,8 +14,122 @@ $(document).ready(function () {
     paciente.buttons().container().insertBefore('.botoneraexcelpdfpaciente');
     
     
+    
+    var ireportcitapaciente = $('#tbliReportCitaPaciente').DataTable({
+        "language": idioma_espanol,
+        "scrollX": true,
+        "aaSorting": [[0, "desc"]],
+        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "todos"]],
+        buttons: [
+            {
+                extend: 'excelHtml5',
+                text: '<button class="ui green button" type="button"><i class="fa fa-file-excel-o"></i></button>',
+                titleAttr: 'Excel',
+                title: 'Reporte de citas de pacientes'
+            },
+            {
+                extend: 'pdfHtml5',
+                text: '<button class="ui red button" type="button"><i class="fa fa-file-pdf-o"></i></button>',
+                titleAttr: 'PDF',
+                title: 'Reporte de citas de pacientes'
+            },
+            {
+                extend: 'copyHtml5',
+                text: '<button class="ui orange button" type="button"><i class="fa fa-copy"></i></button>',
+                titleAttr: 'Copiar'
+            }
+        ]
+    });
+    ireportcitapaciente.buttons().container().insertBefore('.botoneraexcelpdfcitapaciente');
+    
+    var ireportpaciente = $('#tblReportePaciente').DataTable({
+        "language": idioma_espanol,
+        "scrollX": true,
+        "aaSorting": [[0, "desc"]],
+        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "todos"]],
+        buttons: [
+            {
+                extend: 'excelHtml5',
+                text: '<button class="ui green button" type="button"><i class="fa fa-file-excel-o"></i></button>',
+                titleAttr: 'Excel',
+                title: 'Reporte de pacientes'
+            },
+            {
+                extend: 'pdfHtml5',
+                text: '<button class="ui red button" type="button"><i class="fa fa-file-pdf-o"></i></button>',
+                titleAttr: 'PDF',
+                title: 'Reporte de pacientes'
+            },
+            {
+                extend: 'copyHtml5',
+                text: '<button class="ui orange button" type="button"><i class="fa fa-copy"></i></button>',
+                titleAttr: 'Copiar'
+            }
+        ]
+    });
+    ireportpaciente.buttons().container().insertBefore('.botoneraexcelpdfreportepaciente');
+    
+    var ireportactividadpaciente = $('#tblReporteActividadPaciente').DataTable({
+        "language": idioma_espanol,
+        "scrollX": true,
+        "aaSorting": [[0, "desc"]],
+        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "todos"]],
+        buttons: [
+            {
+                extend: 'excelHtml5',
+                text: '<button class="ui green button" type="button"><i class="fa fa-file-excel-o"></i></button>',
+                titleAttr: 'Excel',
+                title: 'Reporte de actividades del pacientes'
+            },
+            {
+                extend: 'pdfHtml5',
+                text: '<button class="ui red button" type="button"><i class="fa fa-file-pdf-o"></i></button>',
+                titleAttr: 'PDF',
+                title: 'Reporte de actividades del pacientes'
+            },
+            {
+                extend: 'copyHtml5',
+                text: '<button class="ui orange button" type="button"><i class="fa fa-copy"></i></button>',
+                titleAttr: 'Copiar'
+            }
+        ]
+    });
+    ireportactividadpaciente.buttons().container().insertBefore('.botoneraexcelpdfreporteactividadpaciente');
+    
+    
+    var ireportmedicamentopaciente = $('#tblReporteMedicamentosPaciente').DataTable({
+        "language": idioma_espanol,
+        "scrollX": true,
+        "aaSorting": [[0, "desc"]],
+        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "todos"]],
+        buttons: [
+            {
+                extend: 'excelHtml5',
+                text: '<button class="ui green button" type="button"><i class="fa fa-file-excel-o"></i></button>',
+                titleAttr: 'Excel',
+                title: 'Reporte de medicamentos del pacientes'
+            },
+            {
+                extend: 'pdfHtml5',
+                text: '<button class="ui red button" type="button"><i class="fa fa-file-pdf-o"></i></button>',
+                titleAttr: 'PDF',
+                title: 'Reporte de medicamentos del pacientes'
+            },
+            {
+                extend: 'copyHtml5',
+                text: '<button class="ui orange button" type="button"><i class="fa fa-copy"></i></button>',
+                titleAttr: 'Copiar'
+            }
+        ]
+    });
+    ireportmedicamentopaciente.buttons().container().insertBefore('.botoneraexcelpdfreportemedicamentopaciente');
+    
+    
+    
+    
     var medicamento = $('#tblMedicamento').DataTable({
         "language": idioma_espanol,
+        "scrollX": true,
         "aaSorting": [[0, "desc"]],
         "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "todos"]],
         buttons: [

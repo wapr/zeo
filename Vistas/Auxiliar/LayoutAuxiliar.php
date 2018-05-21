@@ -67,7 +67,9 @@
         <script src="../Recursos/js/buttons.html5.min.js" type="text/javascript"></script>
         <script src="../Recursos/js/buttons.jqueryui.min.js" type="text/javascript"></script>
         <script src="../Recursos/js/buttons.print.min.js" type="text/javascript"></script>
+        <script src='../Recursos/js/ValidatePasswordAuxiliar.js' type="text/javascript"></script>
         <script src="../Recursos/js/jszip.min.js" type="text/javascript"></script>
+        <script src="../Recursos/js/pdfmake.min.js" type="text/javascript"></script>
         <script src="../Recursos/js/vfs_fonts.js" type="text/javascript"></script>
     </body>   
 </html>
