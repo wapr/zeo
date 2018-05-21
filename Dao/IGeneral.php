@@ -25,6 +25,7 @@ interface IGeneral {
     public function ListaTipotumor();
     public function ListaMedicamentos();
     public function ListaConsultorios();
+    public function PacientesPorId($idPaciente);
 
 }
 

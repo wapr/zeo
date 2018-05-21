@@ -443,6 +443,44 @@ class ControladorGeneral extends Conexion implements IGeneral {
         }
     }
 
+    public function PacientesPorId($idPaciente) {
+        try {
+            $result = array();
+            $stm = $this->cnn->prepare("CALL sp_listarPacienteId(?);");
+            $stm->bindParam(1, $idPaciente);
+            $stm->execute();
+            foreach ($stm->fetchAll(PDO::FETCH_OBJ) as $_paciente) {
+                $paciente = new Pacientes();
+                $paciente->setIdPaciente($_paciente->idPaciente);
+                $paciente->setRol($_paciente->Rol);
+                $paciente->setTipoidentificacion($_paciente->tipoidentificacion);
+                $paciente->setIdentificacion($_paciente->identificacion);
+                $paciente->setNombre($_paciente->nombre);
+                $paciente->setApellido($_paciente->apellido);
+                $paciente->setApellidocasada($_paciente->apellidocasada);
+                $paciente->setGenero($_paciente->genero);
+                $paciente->setFechanacimiento($_paciente->fechanacimiento);
+                $paciente->setTiposangre($_paciente->tiposangre);
+                $paciente->setTelefono($_paciente->telefono);
+                $paciente->setCelular($_paciente->celular);
+                $paciente->setEstadocivil($_paciente->estadocivil);
+                $paciente->setOcupacion($_paciente->ocupacion);
+                $paciente->setReligion($_paciente->religion);
+                $paciente->setPais($_paciente->pais);
+                
+                $paciente->setDomicilio($_paciente->domicilio);
+                $paciente->setEmail($_paciente->email);
+                $paciente->setClave($_paciente->clave);
+                $paciente->setFecharegistro($_paciente->fecharegistro);
+                $paciente->setEstado($_paciente->estado);
+                $result[] = $paciente;
+            }
+            return $result;
+        } catch (PDOException $e) {
+            die($e->getMessage());
+        }
+    }
+
 }
 
 if(isset($_GET["listarConsultorios"]) && $_GET["listarConsultorios"]=="listar"){

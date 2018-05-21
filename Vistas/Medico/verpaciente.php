@@ -4,10 +4,10 @@
      include_once '../../Modelo/Roles.php';
      include_once '../../Modelo/Pacientes.php';
      include_once '../../Dao/IMedicos.php';
-     include_once '../../Controladores/MedicosControlador.php';
+     include_once '../../Controladores/ControladorGeneral.php';
 
      $modelpaciente = new Pacientes();
-     $controlmedico = new MedicosControlador();
+     $controlmedico = new ControladorGeneral();
 ?>
 
 <div class="ui segments">
@@ -15,7 +15,7 @@
         <p>Información del paciente detallada</p>
     </div>
     <div class="ui secondary segment">
-        <?php foreach ($controlmedico->ListaPaciente() as $_paciente) : ?>
+        <?php foreach ($controlmedico->PacientesPorId($_GET["idpaciente"]) as $_paciente) : ?>
         <table style="display: block; overflow: scroll;" class="ui selectable blue celled table" cellspacing="0" width="100%">
                 <thead>
                     <tr>

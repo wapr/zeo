@@ -31,7 +31,7 @@
                                  <th>Sangre</th>
                                  <th>Telefono</th>
                                  <th>Celular</th>
-<!--                                 <th>Operaciones</th>-->
+                                 <th>Operaciones</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -44,9 +44,9 @@
                                     <td><?php echo $_paciente->getTiposangre('tiposangre'); ?></td>
                                     <td><?php echo $_paciente->getTelefono('telefono'); ?></td>
                                     <td><?php echo $_paciente->getCelular('celular'); ?></td>
-<!--                                    <td>
+                                    <td>
                                         <button type="button" id="verpaciente" class="ui button violet" OnClick="location.href = 'LayoutMedico.php?load=verpaciente&idpaciente=<?php echo $_paciente->getIdPaciente(); ?>'"><i class="fa fa-eye"></i></button>
-                                    </td>-->
+                                    </td>
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>
