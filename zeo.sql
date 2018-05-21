@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 21-05-2018 a las 17:38:10
+-- Tiempo de generación: 21-05-2018 a las 18:23:38
 -- Versión del servidor: 10.1.30-MariaDB
 -- Versión de PHP: 7.2.2
 
@@ -39,6 +39,12 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_actualizarEspecialidad` (IN `sp_
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_actualizarEstadoCita` (IN `sp_idCita` INT, IN `sp_estado` VARCHAR(35))  BEGIN
 	UPDATE cita SET estado = sp_estado WHERE idCita = sp_idCita;
     select 'ok' as exito;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_ActualizarEtapaTumor` (IN `sp_idEtapatumor` INT, IN `sp_nombreetapa` VARCHAR(25), IN `sp_Paciente` INT, IN `sp_Tumorprimario` INT, IN `sp_Ganglioslinfaticos` INT, IN `sp_Metastasis` INT, IN `sp_Clasificaciontumor` INT, IN `sp_diagnostico` VARCHAR(255))  BEGIN
+UPDATE etapatumor SET nombreetapa = sp_nombreetapa, Paciente = sp_Paciente, Tumorprimario = sp_Tumorprimario, Ganglioslinfaticos = sp_Ganglioslinfaticos,
+  Metastasis = sp_Metastasis, Clasificaciontumor = sp_Clasificaciontumor, diagnostico = sp_diagnostico WHERE idEtapatumor = sp_idEtapatumor;
+  select 'ok' as exito ;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_actualizarHorario` (IN `sp_Horario` INT, IN `sp_Medico` INT, IN `sp_Consultorio` INT, IN `sp_Especialidad` INT, IN `sp_Fecha` DATE, IN `sp_horainicio` TIME, IN `sp_horafinal` TIME)  BEGIN
@@ -210,6 +216,10 @@ END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_listarEtapatumores` (IN `sp_Paciente` INT)  BEGIN
 select * from etapatumor where Paciente = sp_Paciente;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_listarEtapaTumorId` (IN `sp_idEtapatumor` INT)  BEGIN
+select * from etapatumor WHERE idEtapatumor = sp_idEtapatumor;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_ListarHv` ()  BEGIN
@@ -661,7 +671,8 @@ CREATE TABLE `etapatumor` (
 
 INSERT INTO `etapatumor` (`idEtapatumor`, `nombreetapa`, `Paciente`, `Tumorprimario`, `Ganglioslinfaticos`, `Metastasis`, `Clasificaciontumor`, `diagnostico`) VALUES
 (4, 'ETAPA DEMO', 3, 2, 3, 3, 2, 'dEMO ETAPa'),
-(5, 'ETAPA GRAVE', 3, 9, 5, 3, 2, 'SIN DETALLE');
+(5, 'ETAPA GRAVE', 3, 9, 5, 3, 2, 'SIN DETALLE'),
+(6, 'ETAPA INICIAL', 3, 1, 2, 2, 2, 'SIN DETALLE ALGUNO');
 
 -- --------------------------------------------------------
 
@@ -2333,7 +2344,7 @@ ALTER TABLE `espacialidades`
 -- AUTO_INCREMENT de la tabla `etapatumor`
 --
 ALTER TABLE `etapatumor`
-  MODIFY `idEtapatumor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `idEtapatumor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `ganglioslinfaticos`
