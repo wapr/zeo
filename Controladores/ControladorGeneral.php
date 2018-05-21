@@ -667,6 +667,53 @@ class ControladorGeneral extends Conexion implements IGeneral {
         }
     }
 
+    public function ListarEtapaTumorId($idEtapaTumor) {
+        try {
+            $result = array();
+            $stm = $this->cnn->prepare("CALL sp_listarEtapaTumorId (?);");
+            $stm->bindParam(1, $idEtapaTumor);
+            $stm->execute();
+            foreach ($stm->fetchAll(PDO::FETCH_OBJ) as $_etapatumor) {
+                $etapatumor = new EtapaTumor();
+                $etapatumor->setIdEtapatumor($_etapatumor->idEtapatumor);
+                $etapatumor->setNombreetapa($_etapatumor->nombreetapa);
+                $etapatumor->setPaciente($_etapatumor->paciente);
+                $etapatumor->setTumorprimario($_etapatumor->tumorprimario);
+                $etapatumor->setGanglioslinfaticos($_etapatumor->ganglioslinfaticos);
+                $etapatumor->setMetastasis($_etapatumor->metastasis);
+                $etapatumor->setClasificaciontumor($_etapatumor->nombreclasificacion);
+                $etapatumor->setDiagnostico($_etapatumor->diagnostico);
+                $result[] = $etapatumor;
+            }
+            return $result;
+        } catch (PDOException $e) {
+            die($e->getMessage());
+        }
+    }
+
+    public function ActualizarEtapaTumor($datos) {
+        try {
+            $sql = "CALL sp_ActualizarEtapaTumor (?, ?, ?, ?, ?, ?, ?, ?);   ";
+            $stmt = $this->cnn->prepare($sql);
+            $stmt->bindParam(1, $datos["idEtapaTumor"]);
+            $stmt->bindParam(2, $datos["nombre"]);
+            $stmt->bindParam(3, $datos["paciente"]);
+            $stmt->bindParam(4, $datos["tumorprimario"]);
+            $stmt->bindParam(5, $datos["ganglioslinfaticos"]);
+            $stmt->bindParam(6, $datos["metastasis"]);
+            $stmt->bindParam(7, $datos["clasificaciontumor"]);
+            $stmt->bindParam(8, $datos["diagnostico"]);
+
+            $stmt->execute();
+            if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $this->result[] = $row;
+            }
+            return $this->result;
+        } catch (Exception $exc) {
+            echo $exc->getMessage();
+        }
+    }
+
 }
 
 if(isset($_GET["listarConsultorios"]) && $_GET["listarConsultorios"]=="listar"){

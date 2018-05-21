@@ -36,6 +36,8 @@ interface IGeneral {
     public function ActualizarMedicamento($datos);
     public function ListarConsultorioId($idConsultorio);
     public function ActualizarConsultorio($datos);
+    public function ListarEtapaTumorId($idEtapaTumor);
+    public function ActualizarEtapaTumor($datos);
 
 }
 

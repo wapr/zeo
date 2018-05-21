@@ -41,6 +41,7 @@
                             <th>Metastasis</th>
                             <th>Clasificación</th>
                             <th>Diagnostico</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -54,6 +55,9 @@
                                 <td><?php echo $_etapatumor->getMetastasis('metastasis'); ?></td>  
                                 <td><?php echo $_etapatumor->getClasificaciontumor('clasificaciontumor'); ?></td>
                                 <td><?php echo $_etapatumor->getDiagnostico('diagnostico'); ?></td>  
+                                <td>
+                                    <button type="button" id="vermedicamentos" class="ui button violet" OnClick="location.href = 'LayoutMedico.php?load=etapatumorActualizar&idEtapaTumor=<?php  echo $_etapatumor->getIdEtapatumor('idEtapatumor'); ?>'"><i class="fa fa-eye"></i></button>
+                                </td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>

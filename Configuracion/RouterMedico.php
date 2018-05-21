@@ -60,6 +60,9 @@ class RouterMedico {
             case 'consultoriosactualizar':
                 include_once ('../../Vistas/Medico/' . $view . '.php');
             break;
+            case 'etapatumorActualizar':
+                include_once ('../../Vistas/Medico/' . $view . '.php');
+            break;
             case 'logout':
                 include_once ('../../Vistas/Medico/' . $view . '.php');
             break;

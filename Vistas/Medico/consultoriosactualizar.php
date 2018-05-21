@@ -8,8 +8,6 @@ include_once '../../Modelo/Municipios.php';
 include_once '../../Dao/IGeneral.php';
 include_once '../../Controladores/ControladorGeneral.php';
 
-
-
 $controlador = new ControladorGeneral();
 $consultorio = $controlador->ListarConsultorioId($_GET["idconsultorio"]);
 
