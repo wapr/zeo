@@ -481,6 +481,31 @@ class ControladorGeneral extends Conexion implements IGeneral {
         }
     }
 
+    public function ListaMedicamentosId($idMedicamento) {
+        try {
+            $result = array();
+            $stm = $this->cnn->prepare("CALL sp_listaMedicamentosId (?);");
+            $stm->bindParam(1, $idMedicamento);
+            $stm->execute();
+            foreach ($stm->fetchAll(PDO::FETCH_OBJ) as $_medicamentos) {
+                $medicamentos = new Medicamentos();
+                $medicamentos->setIdMedicamento($_medicamentos->idMedicamento);
+                $medicamentos->setCodigomaterial($_medicamentos->codigomaterial);
+                $medicamentos->setEan($_medicamentos->ean);
+                $medicamentos->setNombre($_medicamentos->nombre);
+                $medicamentos->setPresentacion($_medicamentos->presentacion);
+                $medicamentos->setViaadministracion($_medicamentos->viaadministracion);
+                $medicamentos->setDisis($_medicamentos->disis);
+                $medicamentos->setEfectosadversos($_medicamentos->efectosadversos);
+                $medicamentos->setIndicaciones($_medicamentos->indicaciones);
+                $result[] = $medicamentos;
+            }
+            return $result;
+        } catch (PDOException $e) {
+            die($e->getMessage());
+        }
+    }
+
 }
 
 if(isset($_GET["listarConsultorios"]) && $_GET["listarConsultorios"]=="listar"){

@@ -26,6 +26,7 @@ interface IGeneral {
     public function ListaMedicamentos();
     public function ListaConsultorios();
     public function PacientesPorId($idPaciente);
+    public function ListaMedicamentosId($idMedicamento);
 
 }
 

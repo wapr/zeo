@@ -1,3 +1,15 @@
+<?php
+     include_once '../../Configuracion/Conexion.php';
+
+     include_once '../../Modelo/Roles.php';
+     include_once '../../Modelo/Medicamentos.php';
+     include_once '../../Controladores/ControladorGeneral.php';
+
+     
+     $controlador = new ControladorGeneral();
+     $result = $controlador->ListaMedicamentosId($_GET["idmedicamento"]);
+     var_dump($result);
+?>
 <div class="ui raised segment">
     <div class="ui segments">
         <div class="ui blue inverted segment">
@@ -34,7 +46,7 @@
                     </div>
                 </div>
                 <input type="submit" name="btnguardarconsultorio" class="ui green button" value="Guardar">
-                <button name="btnregresar" class="ui red button" OnClick="location.href = 'LayoutMedico.php?load=medicamentos'">Cancelar</button>
+                <button name="btnregresar" class="ui red button" OnClick="location.href = 'LayoutMedico.php?load=consultorios'">Cancelar</button>
             </form>
         </div>
     </div>
