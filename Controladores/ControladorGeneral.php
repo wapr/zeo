@@ -420,7 +420,21 @@ class ControladorGeneral extends Conexion implements IGeneral {
     }
 
     public function RegistrarMedicamentos(Medicamentos $medicamentos) {
-        
+        try {
+            $sql = "CALL sp_regMedicamentos (?, ?, ?, ?, ?, ?, ?, ?);";
+            $this->cnn->prepare($sql)->execute(array(
+                $medicamentos->getCodigomaterial("codigomaterial"),
+                $medicamentos->getEan("ean"),
+                $medicamentos->getNombre("nombre"),
+                $medicamentos->getPresentacion("presentacion"),
+                $medicamentos->getViaadministracion("viaadministracion"),
+                $medicamentos->getDisis("disis"),
+                $medicamentos->getEfectosadversos("efectosadversos"),
+                $medicamentos->getIndicaciones("indicaciones"))
+            );
+        } catch (PDOException $e) {
+            die($e->getMessage());
+        }
     }
 
 }

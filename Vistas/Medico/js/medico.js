@@ -139,7 +139,6 @@ $(function(){
     
     $('#tblAuxiliares tbody').on( 'click', 'button.btnVerAuxiliar', function () {
         var data = auxiliares.row( $(this).parents('tr') ).data();
-            //alert( data[0] );
             $(".verAuxiliar").modal("show")
             
             var datos = new FormData();
@@ -377,7 +376,7 @@ $(function(){
         $("#edit_upd_horaFin").val(data[5])
         $("#idHorario").val(data[6])
         //$("#edit_select_consultorio").val(data[8])
-        $('#edit_select_consultorio').dropdown('set selected', '3');
+        $('#edit_select_consultorio').dropdown("set selected", data[8]);
         $(".updHorario").modal("show");
         console.log(data)
     })
