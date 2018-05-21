@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 21-05-2018 a las 07:30:12
+-- Tiempo de generación: 21-05-2018 a las 17:38:10
 -- Versión del servidor: 10.1.30-MariaDB
 -- Versión de PHP: 7.2.2
 
@@ -26,6 +26,11 @@ DELIMITER $$
 --
 -- Procedimientos
 --
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_actualizarConsultorio` (IN `sp_Consultorio` INT, IN `sp_nombre` VARCHAR(180), IN `sp_pais` VARCHAR(35), IN `sp_departamento` INT, IN `sp_municipio` INT, IN `sp_domicilio` VARCHAR(120))  BEGIN
+UPDATE consultorio SET nombre = sp_nombre, pais = sp_pais, departamento = sp_departamento, municipio = sp_municipio, domicilio = sp_domicilio WHERE idConsultorio = sp_Consultorio;
+select 'ok' as exito ;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_actualizarEspecialidad` (IN `sp_idEspecialidades` INT, IN `sp_detalle` VARCHAR(200))  BEGIN
 	UPDATE espacialidades SET detalle = sp_detalle WHERE idEspecialidades = sp_idEspecialidades;
     select 'ok' as exito ;
@@ -41,8 +46,18 @@ UPDATE horario SET Medico = sp_Medico, Consultorio = sp_Consultorio, Especialida
     select 'ok' as exito;
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_actualizarMedicamento` (IN `sp_Medicamento` INT, IN `sp_codigomaterial` VARCHAR(35), IN `sp_ean` BIGINT(20), IN `sp_nombre` VARCHAR(20), IN `sp_presentacion` VARCHAR(15), IN `sp_viaadministracion` VARCHAR(35), IN `sp_disis` DECIMAL(10,2), IN `sp_efectosadversos` VARCHAR(255), IN `sp_indicaciones` VARCHAR(255))  BEGIN
+UPDATE medicamentos SET codigomaterial = sp_codigomaterial, ean = sp_ean, nombre = sp_nombre,
+presentacion = sp_presentacion, viaadministracion = sp_viaadministracion, disis = sp_disis, efectosadversos = sp_efectosadversos, indicaciones = sp_indicaciones WHERE idMedicamento = sp_Medicamento;
+select 'ok' as exito ;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_consultarActividadesEtapatumo` (IN `sp_Cita` INT)  BEGIN
 	select * from actividades as a INNER JOIN etapatumor as et ON a.Etapatumor = et.idEtapatumor WHERE a.Cita = sp_Cita;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_consultorioId` (IN `sp_Consultorio` INT)  BEGIN
+select * from consultorio WHERE idConsultorio = sp_Consultorio;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_Consultorios` ()  BEGIN
@@ -136,6 +151,10 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_ListaGanglioslinfaticos` ()  BEG
    FROM ganglioslinfaticos;
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_listaMedicamentosId` (IN `sp_Medicamento` INT)  BEGIN
+select * from medicamentos WHERE idMedicamento = sp_Medicamento;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_ListaMetastasis` ()  BEGIN
    SELECT *
    FROM metastasis;
@@ -209,6 +228,10 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_listarMedicos` (IN `sp_estado` I
 	SELECT * FROM Medicos as M, espacialidades as E WHERE M.idMedico = E.Medico AND estado = sp_estado;
    END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_listarPacienteId` (IN `sp_Paciente` INT)  BEGIN
+select * from pacientes WHERE idPaciente = sp_Paciente;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_ListaTumorprimario` ()  BEGIN
    SELECT *
    FROM tumorprimario;
@@ -226,6 +249,10 @@ END IF$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_municipioxDepartamento` (IN `sp_Departamento` INT)  BEGIN
 SELECT * FROM municipios WHERE Departamento = sp_Departamento;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_NombreConsultorios` ()  BEGIN
+select * from consultorio;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_regClasificaciontumor` (IN `sp_tipotumores` INT(11), IN `sp_nombreclasificacion` VARCHAR(35), IN `sp_detalle` VARCHAR(255))  BEGIN
@@ -535,8 +562,8 @@ CREATE TABLE `consultorio` (
 --
 
 INSERT INTO `consultorio` (`idConsultorio`, `nombre`, `pais`, `departamento`, `municipio`, `domicilio`) VALUES
-(1, 'PRINCIPAL', 'COLOMBIA', 1, 1, 'CRA 58'),
-(2, 'CONSUL', 'COLOMBIA', 1, 1, 'CENTRO'),
+(1, 'PRINCIPAL', 'COLOMBIA', 11, 20, 'CRA 58'),
+(2, 'CONSULADOR', 'COLOMBIA', 6, 11, 'CENTRO'),
 (3, 'CONSULTORIO ONCOLOGICO DEL CARIBE', 'COLOMBIA', 5, 166, 'BARRIO BOCAGRANDE MZ 7');
 
 -- --------------------------------------------------------
@@ -725,8 +752,8 @@ CREATE TABLE `medicamentos` (
 --
 
 INSERT INTO `medicamentos` (`idMedicamento`, `codigomaterial`, `ean`, `nombre`, `presentacion`, `viaadministracion`, `disis`, `efectosadversos`, `indicaciones`) VALUES
-(1, '0003', 123112, 'MEDICAMENTO DE PRUEBA', 'PASTILLA', 'ORAL', '1.00', 'NINGUNO', 'NINGUNO'),
-(2, 'xsasa123221', 123333323222, 'ACETAMINOFEN', 'TABLETAS', 'ORAL', '1.50', 'NINGUNO', 'TOMAR CADA 2 HORAS');
+(1, '0003', 123112, 'MEDICAMENTO DE PRUEB', 'PASTILLA', 'ORAL', '1.00', 'NINGUNO2222', 'NINGUNO1'),
+(2, 'xsasa123221', 123333323222, 'ACETAMINOFEN', 'TABLETAS', 'ORAL', '1.50', 'NINGUNO23', 'TOMAR CADA 2 HORAS');
 
 -- --------------------------------------------------------
 
