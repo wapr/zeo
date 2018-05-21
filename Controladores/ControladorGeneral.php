@@ -1,4 +1,6 @@
 <?php
+require_once $_SERVER['DOCUMENT_ROOT'] . "/Zeo/Configuracion/Conexion.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/Zeo/Dao/IGeneral.php";
 /**
  * Description of ControladorGeneral
  *
@@ -9,7 +11,9 @@ class ControladorGeneral extends Conexion implements IGeneral {
     public function __construct() {
         parent::ConexionMySQLServer();
     }
-    
+    public function cotejamiento() {
+        return $this->cnn->query("SET NAMES 'utf8'");
+    }
     public function RegistrarPaciente(Pacientes $pacientes) {
          try {
             $sql = "CALL sp_RegisterPaciente (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
@@ -423,6 +427,61 @@ class ControladorGeneral extends Conexion implements IGeneral {
         
     }
 
+    public function ListaConsultorios() {
+        try {
+            self::cotejamiento();
+            $sql = "CALL sp_Consultorios();";
+            $stmt = $this->cnn->prepare($sql);
+            
+            $stmt->execute();
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $this->result[] = $row;
+            }
+            return $this->result;
+        } catch (PDOException $e) {
+            die($e->getMessage());
+        }
+    }
+
+}
+
+if(isset($_GET["listarConsultorios"]) && $_GET["listarConsultorios"]=="listar"){
+    $controller = new ControladorGeneral();
+    $r = $controller->ListaConsultorios();
+    if(count($r) != 0){
+         echo '{
+            "data": [';
+            for($i=0;$i<count($r)-1;$i++){
+            echo ' 
+              [
+                "'.($i+1).'",
+                "'.$r[$i]["nombre"].'",
+                "'.$r[$i]["pais"].'",
+                "'.$r[$i]["departamento"].'",
+                "'.$r[$i]["municipio"].'",
+                "'.$r[$i]["domicilio"].'",
+                "'.$r[$i]["idConsultorio"].'"
+              ],';
+            }
+            echo ' 
+              [
+                "'.(count($r)).'",
+                "'.$r[$i]["nombre"].'",
+                "'.$r[$i]["pais"].'",
+                "'.$r[$i]["departamento"].'",
+                "'.$r[$i]["municipio"].'",
+                "'.$r[$i]["domicilio"].'",
+                "'.$r[$i]["idConsultorio"].'"
+              ]
+            ]
+          }';
+     }else{
+         echo '{
+            "data": []
+            }';
+            
+     }
+    return;
 }
 
 ?>

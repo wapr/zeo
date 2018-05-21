@@ -824,6 +824,7 @@ if(isset($_GET["medicoEspecialidades"]) && $_GET["medicoEspecialidades"]=="lista
      }
     
 }
+//FUNCION PENDIENTE POR ELIMINAR
 if(isset($_GET["medicoEspecialidades"]) && $_GET["medicoEspecialidades"]=="listarConsultorios"){
     $controlador = new MedicosControlador();
     $r = $controlador->listarConsultorios();
@@ -981,6 +982,7 @@ if(isset($_GET["listarMedicamentoPaciente"]) && $_GET["listarMedicamentoPaciente
      }
     return;
 }
+//FUNCION PENDIENTE POR ELIMINAR
 if(isset($_GET["listarEspacilidadesMedico"]) && $_GET["listarEspacilidadesMedico"]=="listarEspecialalidades" ){
     session_start();
     $controlador = new MedicosControlador();
@@ -1087,5 +1089,72 @@ if(isset($_POST["editHorarioMedico"]) && $_POST["editHorarioMedico"]=="actualiza
     $r = $controlador->actualizarHorario($datos);
     echo json_encode($r);
     return; 
+}
+if(isset($_GET["dropdownConsultorio"]) && $_GET["dropdownConsultorio"]=="select"){
+    $controlador = new MedicosControlador();
+    $r = $controlador->listarConsultorios();
+    
+    if(count($r) != 0){
+         echo '{
+            "success": true,
+            "results": [';
+            for($i=0;$i<count($r)-1;$i++){
+            echo ' 
+              {
+                "name" : "'.$r[$i]["nombre"].'",
+                "value": "'.$r[$i]["idConsultorio"].'",
+                "text": "'.$r[$i]["nombre"].'"
+              },';
+            }
+            echo ' 
+              {
+                "name" : "'.$r[$i]["nombre"].'",
+                "value": "'.$r[$i]["idConsultorio"].'",
+                "text": "'.$r[$i]["nombre"].'"
+              }
+            ]
+          }';
+     }else{
+         echo '{
+            "success": false,
+            "results": []
+            }';
+            
+     }
+    return;
+}
+
+if(isset($_GET["dropdownEspecialidad"]) && $_GET["dropdownEspecialidad"]=="select"){
+    session_start();
+    $controlador = new MedicosControlador();
+    $r = $controlador->listarEspecialidadMedico($_SESSION["idMedico"]);
+   if(count($r) != 0){
+         echo '{
+            "success": true,
+            "results": [';
+            for($i=0;$i<count($r)-1;$i++){
+            echo ' 
+              {
+                "name" : "'.$r[$i]["especialidad"].'",
+                "value": "'.$r[$i]["idEspecialidades"].'",
+                "text": "'.$r[$i]["especialidad"].'"
+              },';
+            }
+            echo ' 
+              {
+                "name" : "'.$r[$i]["especialidad"].'",
+                "value": "'.$r[$i]["idEspecialidades"].'",
+                "text": "'.$r[$i]["especialidad"].'"
+              }
+            ]
+          }';
+     }else{
+         echo '{
+            "success": false,
+            "results": []
+            }';
+            
+     }
+    return;
 }
 ?>

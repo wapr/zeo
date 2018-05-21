@@ -78,6 +78,7 @@
         <script src='../Recursos/js/fullcalendar.min.js' type="text/javascript"></script>
         <script src='../Recursos/js/locale-all.js' type="text/javascript"></script>
         <script src='../Recursos/js/config.js' type="text/javascript"></script>
+        <script src='js/consultorio.js' type="text/javascript"></script>
         <script src='../Recursos/js/ValidatePasswordAuxiliar.js' type="text/javascript"></script>
         <script src='../Recursos/js/dropdown.js' type="text/javascript"></script>
     </body>   
