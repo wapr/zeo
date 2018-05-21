@@ -24,6 +24,11 @@ interface IGeneral {
     public function ListaClasificaciontumor();
     public function ListaTipotumor();
     public function ListaMedicamentos();
+    public function iReportCitaPaciente();
+    public function iReportAuxiliarMedico();
+    public function iReportPaciente();
+    public function iReportActividades();
+    public function iReportMedicamentos();
 
 }
 

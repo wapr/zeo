@@ -437,6 +437,86 @@ class ControladorGeneral extends Conexion implements IGeneral {
         }
     }
 
+    public function iReportAuxiliarMedico() {
+        try {
+            $sql = "CALL sp_ireportauxiliarmedico ();";
+            $stmt = $this->cnn->prepare($sql);
+            $stmt->execute();
+
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $this->result[] = $row;
+            }
+
+            return $this->result;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function iReportCitaPaciente() {
+        try {
+            $sql = "CALL sp_ireportcitapacientemedico ();";
+            $stmt = $this->cnn->prepare($sql);
+            $stmt->execute();
+
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $this->result[] = $row;
+            }
+
+            return $this->result;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function iReportPaciente() {
+        try {
+            $sql = "CALL sp_ireportpaciente ();";
+            $stmt = $this->cnn->prepare($sql);
+            $stmt->execute();
+
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $this->result[] = $row;
+            }
+
+            return $this->result;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function iReportActividades() {
+        try {
+            $sql = "CALL sp_ireportactividadespaciente ();";
+            $stmt = $this->cnn->prepare($sql);
+            $stmt->execute();
+
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $this->result[] = $row;
+            }
+
+            return $this->result;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function iReportMedicamentos() {
+        try {
+            $sql = "CALL sp_ireportmedicamentospaciente ();";
+            $stmt = $this->cnn->prepare($sql);
+            $stmt->execute();
+
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $this->result[] = $row;
+            }
+
+            return $this->result;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
 }
 
 ?>

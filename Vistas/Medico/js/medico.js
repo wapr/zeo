@@ -202,8 +202,8 @@ $(function(){
         municipio : 'empty',
         domicilio : 'empty',
         email: 'empty',
-        clave: ['minLength[60]', 'empty'],
-        repclave: ['minLength[60]', 'empty']
+        clave: ['minLength[4]', 'empty'],
+        repclave: ['minLength[4]', 'empty']
       },
       onSuccess : function(e){
           e.preventDefault();

@@ -9,8 +9,17 @@ class RouterAuxiliar {
 
     public function LoadView($view) {
         switch ($view) :
-            case 'inicio':
-                include_once ('../../Vistas/Auxiliar/' . $view . '.php');
+                case 'iReportCitaPaciente':
+                    include_once ('../../Vistas/Auxiliar/' . $view . '.php');
+                break;
+                case 'iReportPaciente':
+                    include_once ('../../Vistas/Auxiliar/' . $view . '.php');
+                break;
+                case 'iReportActividadesPaciente':
+                    include_once ('../../Vistas/Auxiliar/' . $view . '.php');
+                break;
+                case 'iReportMedicamentoPaciente':
+                    include_once ('../../Vistas/Auxiliar/' . $view . '.php');
                 break;
             case 'logout':
                 include_once ('../../Vistas/Auxiliar/' . $view . '.php');
@@ -22,7 +31,7 @@ class RouterAuxiliar {
 
     public function validateURL($variable) {
         if (empty($variable)) {
-            include_once('../../Vistas/Auxiliar/inicio.php');
+            include_once('../../Vistas/Auxiliar/iReportCitaPaciente.php');
         } else {
             return true;
         }

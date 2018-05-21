@@ -58,12 +58,11 @@ class AdministradorControlador extends Conexion implements IAdministradores {
     public function ListaMedico() {
         try {
             $result = array();
-            $stm = $this->cnn->prepare("CALL sp_GetMedicos();");
+            $stm = $this->cnn->prepare("CALL sp_GetMedico();");
             $stm->execute();
             foreach ($stm->fetchAll(PDO::FETCH_OBJ) as $_medico) {
                 $medico = new Medicos();
                 $medico->setIdMedico($_medico->idMedico);
-                $medico->setCodigo($_medico->codigo);
                 $medico->setRol($_medico->Rol);
                 $medico->setTipoidentificacion($_medico->tipoidentificacion);
                 $medico->setIdentificacion($_medico->identificacion);
@@ -79,8 +78,8 @@ class AdministradorControlador extends Conexion implements IAdministradores {
                 $medico->setOcupacion($_medico->ocupacion);
                 $medico->setReligion($_medico->religion);
                 $medico->setPais($_medico->pais);
-                $medico->setDepartamento($_medico->departamento);
-                $medico->setMunicipio($_medico->municipio);
+                $medico->setDepartamento($_medico->Departamento);
+                $medico->setMunicipio($_medico->Municipio);
                 $medico->setDomicilio($_medico->domicilio);
                 $medico->setEmail($_medico->email);
                 $medico->setClave($_medico->clave);
