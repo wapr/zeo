@@ -1,5 +1,6 @@
 <?php
      include_once '../../Configuracion/Conexion.php';
+     include_once '../../Padlock/SED.php';
 
      include_once '../../Modelo/Roles.php';
      include_once '../../Modelo/Medicos.php';

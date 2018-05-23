@@ -75,6 +75,7 @@ class ControladorGeneral extends Conexion implements IGeneral {
 
     public function ListaDepartamento() {
         try {
+            self::cotejamiento();
             $result = array();
             $stm = $this->cnn->prepare("CALL sp_ListaDepartamentos();");
             $stm->execute();
@@ -92,6 +93,7 @@ class ControladorGeneral extends Conexion implements IGeneral {
 
     public function ListaMunicipiosPorDepartamento() {
         try {
+            self::cotejamiento();
             $result = array();
             $stm = $this->cnn->prepare("CALL sp_ListaMunicipios();");
             $stm->execute();

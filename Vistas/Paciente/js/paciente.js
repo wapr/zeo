@@ -27,7 +27,7 @@ $(function(){
         $(".medicos").show(500);
         $(".horario").hide(1500);
         $('#calendar').fullCalendar('destroy');
-        $("#motivoCitaMedida").val("")
+        $("#motivoCitaMedida").val("");
     })
     var citasActivas = $('#tblCitasActivas').DataTable({
         "ajax": 'http://localhost/zeo/Controladores/PacientesControlador.php?listarCitas=listar',
@@ -161,7 +161,7 @@ var horario = function(id_medico, id_especialidad){
                 var id_paciente = $("#btnhorario").val();
                 var estado = "ESPERA_ATENCION";
                 $("#_btnGuardarCita").on("click", function(){
-                    if($("#_motivoCitaMedica").val() == ""){
+                    if($("#_motivoCitaMedica").val() === ""){
                         $("#_motivoCitaMedica").focus();
                         alert("Debes ingresar un motivo de consulta \n  Es super importante para tu medico!!!");
                         return;

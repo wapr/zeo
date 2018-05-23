@@ -24,7 +24,6 @@
                     <table id="tblReporteActividadPaciente" class="ui selectable blue celled table" cellspacing="0" width="100%">
                         <thead>
                             <tr>
-				 <th>Numero</th>
                                  <th>Concepto</th>
                                  <th>Estado</th>
                                  <th>Paciente</th>
@@ -35,7 +34,6 @@
                         <tbody>
                             <?php for ($i = 0; $i < count($row); $i++) { ?>
                             <tr>
-                                <td><?php echo $row[$i]["idActividad"]; ?></td> 
                                 <td><?php echo $row[$i]["concepto"]; ?></td>
                                 <td><?php echo $row[$i]["estado"]; ?></td>   
                                 <td><?php echo $row[$i]["PACIENTE"]; ?></td>

@@ -1,5 +1,6 @@
 <?php
 include_once '../../Configuracion/Conexion.php';
+include_once '../../Padlock/SED.php';
 
 include_once '../../Modelo/Roles.php';
 include_once '../../Dao/IRoles.php';
@@ -12,6 +13,7 @@ include_once '../../Controladores/ControladorGeneral.php';
 
 $modelmedico = new Medicos();
 $controlpaciente = new ControladorGeneral();
+
 
 if (isset($_POST['btnguardarmedico'])) {
     $modelmedico->setTipoidentificacion($_REQUEST['txttipoidentificacionmedico']);
@@ -159,7 +161,7 @@ if (isset($_POST['btnguardarmedico'])) {
                                 </div>
                             </div>
                             <input type="submit" name="btnguardarmedico" class="ui green button" value="Guardar">
-                            <button name="btnregresarmedico" class="ui red button" OnClick="location.href = 'http://localhost/Zeo/index.php'">Cancelar</button>
+                            <button name="btnregresarmedico" class="ui red button" OnClick="location.href = 'LayoutAdministrador.php?load=medicos'">Cancelar</button>
                         </form>
                     </div>
                     </form>
