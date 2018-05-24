@@ -3,12 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/xampp/htdocs/zeo/Vistas/Recursos/js/table.js</file>
-            <file>file:/C:/xampp/htdocs/zeo/Vistas/Medico/js/consultorio.js</file>
-            <file>file:/C:/xampp/htdocs/zeo/Vistas/Medico/js/gestionPaciente.js</file>
-            <file>file:/C:/xampp/htdocs/zeo/Vistas/Medico/consultorios.php</file>
+            <file>file:/C:/xampp/htdocs/zeo/Vistas/Medico/etapatumorActualizar.php</file>
+            <file>file:/C:/xampp/htdocs/zeo/Vistas/Medico/etapatumor.php</file>
+            <file>file:/C:/xampp/htdocs/zeo/Dao/IGeneral.php</file>
             <file>file:/C:/xampp/htdocs/zeo/Controladores/ControladorGeneral.php</file>
-            <file>file:/C:/xampp/htdocs/zeo/Vistas/Medico/gestionpaciente.php</file>
         </group>
     </open-files>
 </project-private>

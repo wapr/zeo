@@ -1,4 +1,5 @@
 <?php
+error_reporting(0);
 require_once $_SERVER['DOCUMENT_ROOT'] . "/Zeo/Configuracion/Conexion.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/Zeo/Dao/IPacientes.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/Zeo/Modelo/Sesion.php";
@@ -130,12 +131,25 @@ class PacientesControlador extends Conexion implements IPacientes {
         return $this->result;
     }
 
+    public function etapaTumorPaciente($idPAciente) {
+        $sql = " call sp_etapaTumorPaciente(?); ";
+        $stmt = $this->cnn->prepare($sql);
+        $stmt->bindParam(1, $idPAciente);
+
+        $stmt->execute();
+        if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $this->result[] = $row;
+        }
+        return $this->result;
+    }
+
 }
 
 if(isset($_GET["listarCitas"]) && $_GET["listarCitas"]=="listar"){
     session_start();
     error_reporting(0);
     $paciente = new PacientesControlador();
+    
     $r = $paciente->listarCitas($_SESSION["idPaciente"], 'ESPERA_ATENCION');
     if(count($r) != 0){
          echo '{
@@ -182,28 +196,36 @@ if(isset($_GET["listarCitasRealizadas"]) && $_GET["listarCitasRealizadas"]=="lis
     session_start();
     error_reporting(0);
     $paciente = new PacientesControlador();
+    $etapaTumor = new PacientesControlador();
+    
     $r = $paciente->listarCitas($_SESSION["idPaciente"], 'ATENDIDO');
+    $et = $etapaTumor->etapaTumorPaciente($_SESSION["idPaciente"]);
+    //print_r($et);return;
     if(count($r) != 0){
          echo '{
             "data": [';
             for($i=0;$i<count($r)-1;$i++){
+                
             echo ' 
               [
                 "'.($i+1).'",
                 "'.$r[$i]["concepto"].'",
                 "'.$r[$i]["estado"].'",
                 "'.$r[$i]["especialidad"].'",
+                "'.$et[0]["diagnostico"].'",
                 "'.$r[$i]["fecha"].'",
                 "'.$r[$i]["horainicio"]." - ".$r[$i]["horafinal"].'",
                 "'.$r[$i]["idCita"].'"
               ],';
             }
+            
             echo ' 
               [
                 "'.(count($r)).'",
                 "'.$r[$i]["concepto"].'",
                 "'.$r[$i]["estado"].'",
                 "'.$r[$i]["especialidad"].'",
+                "'.$et[0]["diagnostico"].'",
                 "'.$r[$i]["fecha"].'",
                 "'.$r[$i]["horainicio"]." - ".$r[$i]["horafinal"].'",
                 "'.$r[$i]["idCita"].'"
@@ -221,6 +243,7 @@ if(isset($_GET["listarCitasRealizadas"]) && $_GET["listarCitasRealizadas"]=="lis
 if(isset($_GET["listarActividades"]) && $_GET["listarActividades"]=="listar"){
     $paciente = new PacientesControlador();
     $r = $paciente->listarActividades($_GET["idCita"]);
+    
     if(count($r) != 0){
          echo '{
             "data": [';

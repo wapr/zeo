@@ -16,6 +16,7 @@
                                     <th>Concepto</th>
                                     <th>Estado</th>
                                     <th>Especialidad</th>
+                                    <th>Diagnostico</th>
                                     <th>Fecha</th>
                                     <th>Hora</th>
                                     <th></th>

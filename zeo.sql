@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 21-05-2018 a las 18:23:38
+-- Tiempo de generación: 24-05-2018 a las 06:56:21
 -- Versión del servidor: 10.1.30-MariaDB
 -- Versión de PHP: 7.2.2
 
@@ -81,6 +81,10 @@ END$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_eliminarMedicamento` (IN `sp_Medicamento` INT)  BEGIN
 delete from recetasmedicas where idRecetasmedicas = sp_Medicamento;
 select 'ok' as exito;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_etapaTumorPaciente` (IN `sp_Paciente` INT)  BEGIN 
+	select * from etapatumor where Paciente = sp_Paciente order by idEtapatumor desc limit 1;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_GetClasificaciontumor` ()  BEGIN
@@ -215,7 +219,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_listarEtapaTumor` ()  BEGIN
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_listarEtapatumores` (IN `sp_Paciente` INT)  BEGIN
-select * from etapatumor where Paciente = sp_Paciente;
+select * from etapatumor where Paciente = sp_Paciente order by idEtapaTumor desc limit 1;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_listarEtapaTumorId` (IN `sp_idEtapatumor` INT)  BEGIN
@@ -425,7 +429,6 @@ CREATE TABLE `actividades` (
 INSERT INTO `actividades` (`idActividad`, `Cita`, `Etapatumor`, `concepto`, `estado`, `fecharegistro`, `numerohora`, `numerodia`) VALUES
 (0, 10, 5, 'dfkln', 'dflnkbdf', '2018-05-11', 1, 21),
 (12, 1, 4, 'Primerio', 'N/A', '2018-04-19', 1, 2),
-(21, 3, 4, 'qqqq', 'asdasdas', '2018-04-26', 12, 2),
 (22, 4, 4, 'qqqqssss', 'sss', '2018-04-26', 2, 2),
 (23, 5, 4, '11', '11', '2018-04-26', 1, 1);
 

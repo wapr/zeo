@@ -15,5 +15,6 @@ interface IPacientes {
      public function listarActividades($Paciente);
      public function listarMedicamentos($Paciente);
      public function listaActividadesMedicamentos($estado, $paciente);
+     public function etapaTumorPaciente($idPAciente);
 }
 ?>
