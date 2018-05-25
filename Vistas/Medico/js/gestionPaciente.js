@@ -157,6 +157,7 @@ $(function(){
         estado     : 'empty',
         numHoras     : 'empty',
         numDias     : 'empty',
+        frecuencia : 'empty'
       },
       onSuccess : function(e){
           e.preventDefault();
@@ -168,7 +169,7 @@ $(function(){
               datos.append("estado", $("#estado").val());
               datos.append("numHoras", $("#numHoras").val());
               datos.append("numDias", $("#numDias").val());
-              
+              datos.append("frecuencia", $("#frecuencia").val());
               datos.append("medigoRegistrarActividad", "registarActividad");
            $.ajax({
                     url: myApp.url + 'MedicosControlador.php',
@@ -212,6 +213,7 @@ $(function(){
         conceptoMed     : 'empty',
         medNumHoras     : 'empty',
         medNumDias     : 'empty',
+        mdFrecuencia : 'empty'
       },
       onSuccess : function(e){
           e.preventDefault();
@@ -222,6 +224,7 @@ $(function(){
               datos.append("concepto", $("#conceptoMed").val());
               datos.append("medNumHoras", $("#medNumHoras").val());
               datos.append("medNumDias", $("#medNumDias").val());
+              datos.append("mdFrecuencia", $("#mdFrecuencia").val());
               datos.append("registrarMedicamento", "medicoRegistrarMedicamento");
            $.ajax({
                     url: myApp.url + 'MedicosControlador.php',

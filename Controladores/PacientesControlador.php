@@ -255,7 +255,8 @@ if(isset($_GET["listarActividades"]) && $_GET["listarActividades"]=="listar"){
                 "'.$r[$i]["estado"].'",
                 "'.$r[$i]["fecharegistro"].'",
                 "'.$r[$i]["numerohora"].'",
-                "'.$r[$i]["numerodia"].'"
+                "'.$r[$i]["numerodia"].'",
+                "'.$r[$i]["frecuencia"].'"
               ],';
             }
             echo ' 
@@ -265,7 +266,8 @@ if(isset($_GET["listarActividades"]) && $_GET["listarActividades"]=="listar"){
                 "'.$r[$i]["estado"].'",
                 "'.$r[$i]["fecharegistro"].'",
                 "'.$r[$i]["numerohora"].'",
-                "'.$r[$i]["numerodia"].'"
+                "'.$r[$i]["numerodia"].'",
+                "'.$r[$i]["frecuencia"].'"
               ]
             ]
           }';
@@ -292,6 +294,7 @@ if(isset($_GET["listarMedicamentos"]) && $_GET["listarMedicamentos"]=="listar"){
                 "'.$r[$i]["fecharegistro"].'",
                 "'.$r[$i]["numerohora"].'",
                 "'.$r[$i]["numerodia"].'"
+                "'.$r[$i]["frecuencia"].'"
               ],';
             }
             echo ' 
@@ -301,7 +304,8 @@ if(isset($_GET["listarMedicamentos"]) && $_GET["listarMedicamentos"]=="listar"){
                 "'.$r[$i]["concepto"].'",
                 "'.$r[$i]["fecharegistro"].'",
                 "'.$r[$i]["numerohora"].'",
-                "'.$r[$i]["numerodia"].'"
+                "'.$r[$i]["numerodia"].'",
+                "'.$r[$i]["frecuencia"].'"
               ]
             ]
           }';

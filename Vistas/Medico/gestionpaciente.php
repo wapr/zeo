@@ -55,11 +55,15 @@
             <div class="fields">
                 <div class="five wide field">
                     <label># Horas</label>
-                    <input type="number" placeholder="Numero de horas" name="numHoras" id="numHoras">
+                    <input type="number" min="1" placeholder="Numero de horas" name="numHoras" id="numHoras">
                 </div>
                 <div class="five wide field">
                     <label># Dias</label>
                     <input type="text" placeholder="Numero de dias" name="numDias" id="numDias">
+                </div>
+                <div class="five wide field">
+                    <label>Frecuencia</label>
+                    <input type="number" min="1" placeholder="Frecuencia actividad" name="frecuencia" id="frecuencia">
                 </div>
             </div>
             <input type="hidden" id="idPaciente" />
@@ -90,6 +94,7 @@
                      <th>Fecha registro</th>
                      <th>Numero hora</th>
                      <th>Numero dia</th>
+                     <th>Frecuencia</th>
                      <th></th>
                 </tr>
             </thead>
@@ -138,6 +143,10 @@
                 <div class="five wide field">
                     <label># Dias</label>
                     <input type="text" placeholder="Numero de dias" name="medNumDias" id="medNumDias">
+                </div>
+                <div class="five wide field">
+                    <label>Frecuencia</label>
+                    <input type="number" placeholder="Frecuencia" name="mdFrecuencia" id="mdFrecuencia">
                 </div>
             </div>
             <input type="hidden" id="idPacienteMed" />

@@ -417,7 +417,7 @@ class MedicosControlador extends Conexion implements IMedicos {
     }
 
     public function medicoRegistrarActividad($datos) {
-        $sql = " call sp_registrarActividad(?, ?, ?, ?, ?, ?); ";
+        $sql = " call sp_registrarActividad(?, ?, ?, ?, ?, ?, ?); ";
         $stmt = $this->cnn->prepare($sql);
         $stmt->bindParam(1, $datos["idPaciente"]);
         $stmt->bindParam(2, $datos["etapaTumor"]);
@@ -425,6 +425,7 @@ class MedicosControlador extends Conexion implements IMedicos {
         $stmt->bindParam(4, $datos["estado"]);
         $stmt->bindParam(5, $datos["numHoras"]);
         $stmt->bindParam(6, $datos["numDias"]);
+        $stmt->bindParam(7, $datos["frecuencia"]);
 
         $stmt->execute();
         if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -446,7 +447,7 @@ class MedicosControlador extends Conexion implements IMedicos {
     }
 
     public function medicoRegistrarMedicamento($datos) {
-        $sql = " call sp_registrarMedicamento(?, ?, ?, ?, ?, ?); ";
+        $sql = " call sp_registrarMedicamento(?, ?, ?, ?, ?, ?, ?); ";
         $stmt = $this->cnn->prepare($sql);
         $stmt->bindParam(1, $datos["idPacienteMed"]);
         $stmt->bindParam(2, $datos["medicamentos"]);
@@ -454,6 +455,7 @@ class MedicosControlador extends Conexion implements IMedicos {
         $stmt->bindParam(4, $datos["concepto"]);
         $stmt->bindParam(5, $datos["medNumHoras"]);
         $stmt->bindParam(6, $datos["medNumDias"]);
+        $stmt->bindParam(7, $datos["medFrecuencia"]);
 
         $stmt->execute();
         if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -890,6 +892,7 @@ if(isset($_POST["medigoRegistrarActividad"]) && $_POST["medigoRegistrarActividad
         "estado" => $_POST["estado"],
         "numHoras" => $_POST["numHoras"],
         "numDias" => $_POST["numDias"],
+        "frecuencia" => $_POST["frecuencia"],
     );
     $regitrarActividad = new MedicosControlador();
     $r = $regitrarActividad->medicoRegistrarActividad($datos);
@@ -910,6 +913,7 @@ if(isset($_GET["consultarActividadesEtapa"]) && $_GET["consultarActividadesEtapa
                 "'.$r[$i]["fecharegistro"].'",
                 "'.$r[$i]["numerohora"].'",
                 "'.$r[$i]["numerodia"].'",
+                "'.$r[$i]["frecuencia"].'",
                 "'.$r[$i]["idActividad"].'"
               ],';
             }
@@ -921,6 +925,7 @@ if(isset($_GET["consultarActividadesEtapa"]) && $_GET["consultarActividadesEtapa
                 "'.$r[$i]["fecharegistro"].'",
                 "'.$r[$i]["numerohora"].'",
                 "'.$r[$i]["numerodia"].'",
+                "'.$r[$i]["frecuencia"].'",
                 "'.$r[$i]["idActividad"].'"
               ]
             ]
@@ -940,7 +945,8 @@ if(isset($_POST["registrarMedicamento"]) && $_POST["registrarMedicamento"]=="med
         "etapa" => $_POST["etapa"],
         "concepto" => $_POST["concepto"],
         "medNumHoras" => $_POST["medNumHoras"],
-        "medNumDias" => $_POST["medNumDias"]
+        "medNumDias" => $_POST["medNumDias"],
+        "medFrecuencia" => $_POST["mdFrecuencia"],
     );
     $controller = new MedicosControlador();
     $r = $controller->medicoRegistrarMedicamento($datos);

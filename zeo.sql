@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 25-05-2018 a las 05:30:01
+-- Tiempo de generación: 25-05-2018 a las 06:55:51
 -- Versión del servidor: 10.1.30-MariaDB
 -- Versión de PHP: 7.2.2
 
@@ -112,6 +112,11 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_GetPacientes` ()  BEGIN
 	select * from cita as C INNER JOIN pacientes as P ON C.Paciente = P.idPaciente;
  END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_GetTipoTumor` ()  BEGIN
+   SELECT *
+   FROM tipotumores;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_horarioMedico` (IN `sp_Medico` INT(3), IN `sp_Especialidad` INT(3))  BEGIN
 	SELECT idHorario as id, fecha as start, CONCAT(horainicio," - " , horafinal) as title FROM horario WHERE Medico = sp_Medico AND Especialidad = sp_Especialidad;
    END$$
@@ -150,6 +155,46 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_iniciarsesionpaciente` (IN `sp_e
    FROM pacientes p 
    INNER JOIN Roles r ON p.Rol = r.idRol 
    WHERE p.email = sp_email AND p.clave = sp_clave AND p.Rol = sp_rol;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_iniciosesionmedico` (IN `sp_identificacion` BIGINT(20), IN `sp_clave` VARCHAR(100), IN `sp_rol` VARCHAR(100))  BEGIN
+	SELECT *
+	FROM medicos m 
+	INNER JOIN Roles r ON m.Rol = r.idRol
+	WHERE m.identificacion = sp_identificacion AND m.clave = sp_clave AND m.Rol = sp_rol;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_ireportactividadespaciente` ()  BEGIN
+	SELECT a.idActividad, a.fecharegistro, a.concepto, a.estado, CONCAT(p.identificacion, ' ', p.nombre,' ', p.apellido, ' ') AS 'PACIENTE',
+		   a.numerohora, a.numerodia
+	FROM actividades a
+	INNER JOIN etapatumor e ON e.idEtapatumor = a.Etapatumor
+	INNER JOIN cita c ON a.Cita = c.idCita
+	INNER JOIN pacientes p ON c.Paciente = p.idPaciente;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_ireportcitapacientemedico` ()  BEGIN
+	SELECT c.idCita AS 'IDCITA', h.fecha AS 'FECHACITA', h.horainicio AS 'HORAINICIO', h.horafinal AS 'HORAFINAL', 
+		   c.concepto AS 'CONCEPTO', c.estado AS 'ESTADO', 
+		   CONCAT(p.identificacion, ' ', p.nombre,' ', p.apellido, ' ') AS 'PACIENTE',
+           CONCAT(m.nombre,' ', m.apellido, ' ') AS 'MEDICO'
+	FROM cita c
+	INNER JOIN pacientes p ON p.idPaciente = c.Paciente
+	INNER JOIN horario h ON h.idHorario = c.Horario
+	INNER JOIN medicos m ON m.idMedico = h.Medico
+	INNER JOIN espacialidades e ON e.idEspecialidades = h.Especialidad
+	INNER JOIN consultorio co ON co.idConsultorio = h.Consultorio;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_ireportmedicamentospaciente` ()  BEGIN
+	SELECT r.idRecetasmedicas, CONCAT('CITA NUMERO', ' ', c.idCita, ' ', 'POR CONCEPTO DE ', c.concepto) AS 'CITA', 
+		   m.nombre, m.presentacion, m.viaadministracion, m.disis, m.efectosadversos, m.indicaciones,
+		   CONCAT(p.identificacion, ' ', p.nombre,' ', p.apellido, ' ') AS 'PACIENTE'
+	FROM recetasmedicas r
+	INNER JOIN cita c ON r.Cita = c.idCita
+	INNER JOIN medicamentos m ON r.Medicamentos = m.idMedicamento
+	INNER JOIN etapatumor e ON e.idEtapatumor = r.Etapatumor
+	INNER JOIN pacientes p ON e.Paciente = p.idPaciente;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_ListaClasificaciontumor` ()  BEGIN
@@ -320,9 +365,9 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_RegisterPaciente` (IN `sp_tipoid
 	SELECT 'registro ingresado con exito' as response;
  END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_registrarActividad` (IN `sp_Cita` INT, IN `sp_Etapatumo` INT, IN `sp_concepto` VARCHAR(255), IN `sp_estado` VARCHAR(35), IN `sp_numerohora` INT, IN `sp_numerodia` INT)  BEGIN
-	INSERT INTO actividades (idActividad, Cita, Etapatumor, concepto, estado, fecharegistro, numerohora, numerodia) 
-						values(0, sp_Cita, sp_Etapatumo, sp_concepto, sp_estado, now(), sp_numerohora,sp_numerodia);
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_registrarActividad` (IN `sp_Cita` INT, IN `sp_Etapatumo` INT, IN `sp_concepto` VARCHAR(255), IN `sp_estado` VARCHAR(35), IN `sp_numerohora` INT, IN `sp_numerodia` INT, IN `sp_frecuencia` INT)  BEGIN
+	INSERT INTO actividades (idActividad, Cita, Etapatumor, concepto, estado, fecharegistro, numerohora, numerodia, frecuencia) 
+						values(0, sp_Cita, sp_Etapatumo, sp_concepto, sp_estado, now(), sp_numerohora,sp_numerodia, sp_frecuencia);
                     select 'ok' as exito;
 END$$
 
@@ -395,9 +440,9 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_registrarHorario` (IN `sp_Medico
 	 END;
  END IF$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_registrarMedicamento` (IN `sp_Cita` INT, IN `sp_Medicamentos` INT, IN `sp_Etapatumor` INT, IN `sp_concepto` VARCHAR(255), IN `sp_numerohora` INT, IN `sp_numerodia` INT)  BEGIN
-INSERT INTO recetasmedicas (idRecetasmedicas, Cita, Medicamentos, Etapatumor, concepto, fecharegistro, numerohora, numerodia) 
-						VALUES (0, sp_Cita, sp_Medicamentos, sp_Etapatumor, sp_concepto, now(), sp_numerohora, sp_numerodia);
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_registrarMedicamento` (IN `sp_Cita` INT, IN `sp_Medicamentos` INT, IN `sp_Etapatumor` INT, IN `sp_concepto` VARCHAR(255), IN `sp_numerohora` INT, IN `sp_numerodia` INT, IN `sp_frecuencia` INT)  BEGIN
+INSERT INTO recetasmedicas (idRecetasmedicas, Cita, Medicamentos, Etapatumor, concepto, fecharegistro, numerohora, numerodia, frecuencia) 
+						VALUES (0, sp_Cita, sp_Medicamentos, sp_Etapatumor, sp_concepto, now(), sp_numerohora, sp_numerodia, sp_frecuencia);
                         select 'ok' as exito;
 END$$
 
@@ -433,18 +478,20 @@ CREATE TABLE `actividades` (
   `estado` varchar(35) COLLATE utf8_spanish_ci NOT NULL,
   `fecharegistro` date DEFAULT NULL,
   `numerohora` int(11) NOT NULL,
-  `numerodia` int(11) NOT NULL
+  `numerodia` int(11) NOT NULL,
+  `frecuencia` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `actividades`
 --
 
-INSERT INTO `actividades` (`idActividad`, `Cita`, `Etapatumor`, `concepto`, `estado`, `fecharegistro`, `numerohora`, `numerodia`) VALUES
-(0, 10, 5, 'dfkln', 'dflnkbdf', '2018-05-11', 1, 21),
-(12, 1, 4, 'Primerio', 'N/A', '2018-04-19', 1, 2),
-(22, 4, 4, 'qqqqssss', 'sss', '2018-04-26', 2, 2),
-(23, 5, 4, '11', '11', '2018-04-26', 1, 1);
+INSERT INTO `actividades` (`idActividad`, `Cita`, `Etapatumor`, `concepto`, `estado`, `fecharegistro`, `numerohora`, `numerodia`, `frecuencia`) VALUES
+(0, 10, 5, 'dfkln', 'dflnkbdf', '2018-05-11', 1, 21, 0),
+(12, 1, 4, 'Primerio', 'N/A', '2018-04-19', 1, 2, 0),
+(22, 4, 4, 'qqqqssss', 'sss', '2018-04-26', 2, 2, 0),
+(23, 5, 4, '11', '11', '2018-04-26', 1, 1, 0),
+(24, 10, 6, 'frecuencia demo', 'NORMAL', '2018-05-24', 2, 3, 3);
 
 -- --------------------------------------------------------
 
@@ -2020,18 +2067,20 @@ CREATE TABLE `recetasmedicas` (
   `concepto` varchar(255) COLLATE utf8_spanish_ci NOT NULL,
   `fecharegistro` date DEFAULT NULL,
   `numerohora` int(11) NOT NULL,
-  `numerodia` int(11) NOT NULL
+  `numerodia` int(11) NOT NULL,
+  `frecuencia` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `recetasmedicas`
 --
 
-INSERT INTO `recetasmedicas` (`idRecetasmedicas`, `Cita`, `Medicamentos`, `Etapatumor`, `concepto`, `fecharegistro`, `numerohora`, `numerodia`) VALUES
-(0, 10, 2, 5, 'lkkl', '2018-05-11', 51, 165),
-(17, 5, 1, 4, '2', '2018-04-26', 2, 2),
-(18, 3, 1, 4, 'wwww', '2018-04-26', 2, 2),
-(19, 4, 1, 4, '3asdasda', '2018-04-26', 2, 2);
+INSERT INTO `recetasmedicas` (`idRecetasmedicas`, `Cita`, `Medicamentos`, `Etapatumor`, `concepto`, `fecharegistro`, `numerohora`, `numerodia`, `frecuencia`) VALUES
+(0, 10, 2, 5, 'lkkl', '2018-05-11', 51, 165, 0),
+(17, 5, 1, 4, '2', '2018-04-26', 2, 2, 0),
+(18, 3, 1, 4, 'wwww', '2018-04-26', 2, 2, 0),
+(19, 4, 1, 4, '3asdasda', '2018-04-26', 2, 2, 0),
+(20, 10, 1, 6, 'FRECUENCIA DEMO', '2018-05-24', 2, 3, 4);
 
 -- --------------------------------------------------------
 
@@ -2313,7 +2362,7 @@ ALTER TABLE `tumorprimario`
 -- AUTO_INCREMENT de la tabla `actividades`
 --
 ALTER TABLE `actividades`
-  MODIFY `idActividad` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `idActividad` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT de la tabla `administradores`
@@ -2415,7 +2464,7 @@ ALTER TABLE `pacientes`
 -- AUTO_INCREMENT de la tabla `recetasmedicas`
 --
 ALTER TABLE `recetasmedicas`
-  MODIFY `idRecetasmedicas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `idRecetasmedicas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT de la tabla `roles`
