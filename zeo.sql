@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 24-05-2018 a las 06:56:21
+-- Tiempo de generación: 25-05-2018 a las 05:30:01
 -- Versión del servidor: 10.1.30-MariaDB
 -- Versión de PHP: 7.2.2
 
@@ -55,6 +55,16 @@ END$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_actualizarMedicamento` (IN `sp_Medicamento` INT, IN `sp_codigomaterial` VARCHAR(35), IN `sp_ean` BIGINT(20), IN `sp_nombre` VARCHAR(20), IN `sp_presentacion` VARCHAR(15), IN `sp_viaadministracion` VARCHAR(35), IN `sp_disis` DECIMAL(10,2), IN `sp_efectosadversos` VARCHAR(255), IN `sp_indicaciones` VARCHAR(255))  BEGIN
 UPDATE medicamentos SET codigomaterial = sp_codigomaterial, ean = sp_ean, nombre = sp_nombre,
 presentacion = sp_presentacion, viaadministracion = sp_viaadministracion, disis = sp_disis, efectosadversos = sp_efectosadversos, indicaciones = sp_indicaciones WHERE idMedicamento = sp_Medicamento;
+select 'ok' as exito ;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_ActualizarMedico` (IN `sp_idMedico` INT(11), IN `sp_identificacion` BIGINT(20), IN `sp_departamentoidentificacion` VARCHAR(35), IN `sp_nombre` VARCHAR(25), IN `sp_apellido` VARCHAR(35), IN `sp_apellidocasada` VARCHAR(35), IN `sp_genero` CHAR(1), IN `sp_fechanacimiento` DATE, IN `sp_tiposangre` CHAR(4), IN `sp_telefono` BIGINT(7), IN `sp_celular` BIGINT(10), IN `sp_estadocivil` VARCHAR(35), IN `sp_domicilio` VARCHAR(120), IN `sp_email` VARCHAR(200), IN `sp_clave` VARCHAR(60), IN `sp_estado` INT(1))  BEGIN
+UPDATE medicos SET identificacion = sp_identificacion, departamentoidentificacion = sp_departamentoidentificacion,
+				   nombre = sp_nombre, apellido = sp_apellido, apellidocasada = sp_apellidocasada,
+				   genero = sp_genero, fechanacimiento = sp_fechanacimiento, tiposangre = sp_tiposangre,
+				   telefono = sp_telefono, celular = sp_celular, estadocivil = sp_estadocivil, domicilio = sp_domicilio, email = sp_email,
+				   clave = sp_clave, estado = sp_estado
+WHERE idMedico = sp_idMedico;
 select 'ok' as exito ;
 END$$
 
@@ -236,6 +246,10 @@ END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_listarMedicamentosPaciente` (IN `sp_Cita` INT)  BEGIN
 	select * from recetasmedicas as rm INNER JOIN medicamentos as m ON rm.Medicamentos = m.idMedicamento INNER JOIN etapatumor as et ON rm.Etapatumor = et.idEtapatumor WHERE rm.Cita = sp_Cita;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_listarMedicoId` (IN `sp_Medico` INT)  BEGIN
+select * from medicos WHERE idMedico = sp_Medico;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_listarMedicos` (IN `sp_estado` INT(1))  BEGIN
