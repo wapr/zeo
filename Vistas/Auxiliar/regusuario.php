@@ -1,15 +1,15 @@
 <?php
-include_once './Configuracion/Conexion.php';
+include_once '../../Configuracion/Conexion.php';
 
-include_once './Modelo/Roles.php';
-include_once './Dao/IRoles.php';
+include_once '../../Modelo/Roles.php';
+include_once '../../Dao/IRoles.php';
 
-include_once './Modelo/Medicos.php';
-include_once './Modelo/Pacientes.php';
-include_once './Modelo/Departamentos.php';
-include_once './Modelo/Municipios.php';
-include_once './Dao/IGeneral.php';
-include_once './Controladores/ControladorGeneral.php';
+include_once '../../Modelo/Medicos.php';
+include_once '../../Modelo/Pacientes.php';
+include_once '../../Modelo/Departamentos.php';
+include_once '../../Modelo/Municipios.php';
+include_once '../../Dao/IGeneral.php';
+include_once '../../Controladores/ControladorGeneral.php';
 
 $modelpaciente = new Pacientes();
 $modelmedico = new Medicos();
@@ -36,7 +36,7 @@ if (isset($_POST['btnguardarpaciente'])) {
     $modelpaciente->setEmail($_REQUEST['txtemailpaciente']);
     $modelpaciente->setClave($_REQUEST['txtclavepaciente']);
     $controlpaciente->RegistrarPaciente($modelpaciente);
-    echo '<script type="text/javascript">window.location.replace("http://localhost/Zeo/index.php");</script>';
+    echo '<script type="text/javascript">window.location.replace("LayoutAuxiliar.php?load=iReportPaciente");</script>';
     exit;
 }
 ?>
@@ -163,7 +163,7 @@ if (isset($_POST['btnguardarpaciente'])) {
                                 </div>
                             </div>
                             <input type="submit" name="btnguardarpaciente" class="ui green button" value="Guardar">
-                            <button name="btnregresar" class="ui red button" OnClick="location.href = 'http://localhost/Zeo/index.php'">Cancelar</button>
+                            <button name="btnregresar" class="ui red button" OnClick="location.href = 'LayoutAuxiliar.php?load=iReportPaciente'">Cancelar</button>
                         </form>
                     </div>
                     </form>

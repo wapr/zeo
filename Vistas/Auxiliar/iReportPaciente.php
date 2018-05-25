@@ -19,7 +19,7 @@
                 <p>REPORTE DE PACIENTES</p>
             </div>
             <div class="ui secondary segment">
-                <button type="button" style="background-color: #F3F4F5;" id="nuevopaciente" class="ui button" OnClick="location.href = ''"></button>
+                <button type="button"  id="nuevopaciente" class="ui button teal" OnClick="location.href = 'LayoutAuxiliar.php?load=regusuario'"><i class="fa fa-address-card-o"></i></button>
                 <div class="ui raised segment botoneraexcelpdfreportepaciente">
                     <table id="tblReportePaciente" class="ui selectable blue celled table" cellspacing="0" width="100%">
                         <thead>

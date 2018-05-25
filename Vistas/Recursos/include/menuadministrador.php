@@ -1,6 +1,6 @@
 <div class="ui blue vertical menu">
     <?php if (isset($_GET["load"]) && $_GET["load"] === "medicos"): ?>
-        <a class="item" href="LayoutAdministrador.php?load=medicos"><i class="doctor icon"></i>Medicos</a>
+        <a class="active item" href="LayoutAdministrador.php?load=medicos"><i class="doctor icon"></i>Medicos</a>
     <?php else: ?>
         <a class="item" href="LayoutAdministrador.php?load=medicos"><i class="doctor icon"></i>Medicos</a>
     <?php endif ?>

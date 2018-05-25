@@ -3,8 +3,11 @@
 require_once $_SERVER['DOCUMENT_ROOT'] . "/Zeo/Configuracion/Conexion.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/Zeo/Dao/IMedicos.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/Zeo/Modelo/Sesion.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/Zeo/Modelo/Roles.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/Zeo/Modelo/Medicos.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/Zeo/Modelo/Especialidades.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/Zeo/Modelo/Auxiliares.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/Zeo/Padlock/SED.php";
 
 /**
  * Description of MedicosControlador
@@ -15,6 +18,7 @@ class MedicosControlador extends Conexion implements IMedicos {
 
     public $objSe;
     public $result;
+    public $pass;
 
     public function __construct() {
         parent::ConexionMySQLServer();
@@ -25,16 +29,15 @@ class MedicosControlador extends Conexion implements IMedicos {
     public function ActualizarInformacion(Medicos $medicos) {
         
     }
+    
+    
 
     public function IniciarSesionMedico() {
         try {
-            $stm = $this->cnn->prepare("SELECT *
-                                    FROM medicos m 
-                                    INNER JOIN Roles r ON m.Rol = r.idRol
-                                    WHERE m.identificacion = :identificacion AND m.clave = :clave AND m.Rol = :rol;");
-            $stm->bindParam(':identificacion', $_POST["identificacion"]);
-            $stm->bindParam(':clave', $_POST["clave"]);
-            $stm->bindParam(':rol', $_POST["rol"]);
+            $stm = $this->cnn->prepare("CALL sp_iniciosesionmedico  (? , ?, ?);");
+            $stm->bindParam(1, $_POST["identificacion"]);
+            $stm->bindParam(2, $_POST["clave"]);
+            $stm->bindParam(3, $_POST["rol"]);
             $stm->execute();
             $result = $stm->fetchAll();
             if ($result) {

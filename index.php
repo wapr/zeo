@@ -85,7 +85,7 @@ $err = isset($_GET['error']) ? $_GET['error'] : null;
                             </form>
                         </div>
                         <div class="panel-footer ">
-                            <a href="regusuario.php" onClick=""> Registrar usuario </a>
+<!--                            <a href="regusuario.php" onClick=""> Registrar usuario </a>-->
                         </div>
                     </div>
                 </div>

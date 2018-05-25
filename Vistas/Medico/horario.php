@@ -59,15 +59,15 @@
             </div>
             <div class="field">
               <label>Fecha</label>
-              <input type="text" id="upd_fecha" name="ipd_fecha" placeholder="Fecha atencion">
+              <input type="date" id="upd_fecha" name="ipd_fecha" placeholder="Fecha atencion">
             </div>
             <div class="field">
               <label>Hora inicio</label>
-              <input type="text" id="upd_horaInicio" name="upd_horaInicio" placeholder="Hora inicio fin">
+              <input type="time" id="upd_horaInicio" name="upd_horaInicio" placeholder="Hora inicio fin">
             </div>
             <div class="field">
               <label>Hora fin</label>
-              <input type="text" id="upd_horaFin" name="upd_horaFin" placeholder="Hora final atencion">
+              <input type="time" id="upd_horaFin" name="upd_horaFin" placeholder="Hora final atencion">
             </div>
             <button class="ui blue button" type="submit">Guardar horario</button>
             <div class="ui error message"></div>
@@ -98,15 +98,15 @@
             </div>
             <div class="field">
               <label>Fecha</label>
-              <input type="text" id="edit_upd_fecha" name="edit_ipd_fecha" placeholder="Fecha atencion">
+              <input type="date" id="edit_upd_fecha" name="edit_ipd_fecha" placeholder="Fecha atencion">
             </div>
             <div class="field">
               <label>Hora inicio</label>
-              <input type="text" id="edit_upd_horaInicio" name="edit_upd_horaInicio" placeholder="Hora inicio fin">
+              <input type="time" id="edit_upd_horaInicio" name="edit_upd_horaInicio" placeholder="Hora inicio fin">
             </div>
             <div class="field">
               <label>Hora fin</label>
-              <input type="text" id="edit_upd_horaFin" name="edit_upd_horaFin" placeholder="Hora final atencion">
+              <input type="time" id="edit_upd_horaFin" name="edit_upd_horaFin" placeholder="Hora final atencion">
             </div>
             <input type="hidden" id="idHorario" />
             <button class="ui blue button" type="submit">Actualizar horario</button>

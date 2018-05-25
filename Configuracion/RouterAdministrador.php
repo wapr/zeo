@@ -18,6 +18,9 @@ class RouterAdministrador {
             case 'regusuario':
                 include_once ('../../Vistas/Administrador/' . $view . '.php');
             break;
+            case 'editMedico':
+                include_once ('../../Vistas/Administrador/' . $view . '.php');
+            break;
             default:
                 include_once ('../../Vistas/Administrador/error.php');
         endswitch;
@@ -25,7 +28,7 @@ class RouterAdministrador {
 
     public function validateURL($variable) {
         if (empty($variable)) {
-            include_once('../../Vistas/Administrador/regusuario.php');
+            include_once('../../Vistas/Administrador/medicos.php');
         } else {
             return true;
         }

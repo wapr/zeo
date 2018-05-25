@@ -70,5 +70,7 @@
         <script src="../Recursos/js/jszip.min.js" type="text/javascript"></script>
         <script src="../Recursos/js/vfs_fonts.js" type="text/javascript"></script>
         <script src="../Recursos/js/dropdown.js" type="text/javascript"></script>
+        <script src="../Recursos/js/ValidatePasswordMedico.js" type="text/javascript"></script>
+        <script src="../Recursos/js/validatenumbersletters.js" type="text/javascript"></script>
     </body>   
 </html>
