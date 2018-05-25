@@ -21,6 +21,9 @@ class RouterAuxiliar {
                 case 'iReportMedicamentoPaciente':
                     include_once ('../../Vistas/Auxiliar/' . $view . '.php');
                 break;
+                case 'regusuario':
+                    include_once ('../../Vistas/Auxiliar/' . $view . '.php');
+                break;
             case 'logout':
                 include_once ('../../Vistas/Auxiliar/' . $view . '.php');
                 break;

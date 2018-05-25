@@ -18,6 +18,9 @@ class RouterAdministrador {
             case 'regusuario':
                 include_once ('../../Vistas/Administrador/' . $view . '.php');
             break;
+            case 'editMedico':
+                include_once ('../../Vistas/Administrador/' . $view . '.php');
+            break;
             default:
                 include_once ('../../Vistas/Administrador/error.php');
         endswitch;

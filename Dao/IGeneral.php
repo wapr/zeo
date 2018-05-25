@@ -38,6 +38,8 @@ interface IGeneral {
     public function ActualizarConsultorio($datos);
     public function ListarEtapaTumorId($idEtapaTumor);
     public function ActualizarEtapaTumor($datos);
+    public function ListarMedicoId($idMedico);
+    public function ActualizarMedico($datos);
 
 }
 

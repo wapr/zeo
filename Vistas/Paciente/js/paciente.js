@@ -5,7 +5,7 @@ $(function(){
         center: 'title',
         right: 'month,basicWeek'
       },
-      locale: 'es',
+//      locale: 'es',
       defaultDate: horaActual(),
         defaultView: 'month',  
         navLinks: true, // can click day/week names to navigate views

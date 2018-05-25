@@ -30,8 +30,8 @@ class ControladorGeneral extends Conexion implements IGeneral {
                 $pacientes->getTelefono('telefono'),
                 $pacientes->getCelular('celular'),
                 $pacientes->getEstadocivil('estadocivil'),
-                $pacientes->getOcupacion('ocupacion'),
                 $pacientes->getReligion('religion'),
+                $pacientes->getOcupacion('ocupacion'),
                 $pacientes->getDepartamento('departamento'),
                 $pacientes->getMunicipio('municipio'),
                 $pacientes->getDomicilio('domicilio'),
@@ -706,6 +706,74 @@ class ControladorGeneral extends Conexion implements IGeneral {
             $stmt->bindParam(7, $datos["clasificaciontumor"]);
             $stmt->bindParam(8, $datos["diagnostico"]);
 
+            $stmt->execute();
+            if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $this->result[] = $row;
+            }
+            return $this->result;
+        } catch (Exception $exc) {
+            echo $exc->getMessage();
+        }
+    }
+
+    public function ListarMedicoId($idMedico) {
+        try {
+            $result = array();
+            $stm = $this->cnn->prepare("CALL sp_listarMedicoId (?);");
+            $stm->bindParam(1, $idMedico);
+            $stm->execute();
+            foreach ($stm->fetchAll(PDO::FETCH_OBJ) as $_medicos) {
+                $medicos = new Medicos();
+                $medicos->setIdMedico($_medicos->idMedico);
+                $medicos->setTipoidentificacion($_medicos->tipoidentificacion);
+                $medicos->setIdentificacion($_medicos->identificacion);
+                $medicos->setDepartamentoidentificacion($_medicos->departamentoidentificacion);
+                $medicos->setNombre($_medicos->nombre);
+                $medicos->setApellido($_medicos->apellido);
+                $medicos->setApellidocasada($_medicos->apellidocasada);
+                $medicos->setGenero($_medicos->genero);
+                $medicos->setFechanacimiento($_medicos->fechanacimiento);
+                $medicos->setTiposangre($_medicos->tiposangre);
+                $medicos->setTelefono($_medicos->telefono);
+                $medicos->setCelular($_medicos->celular);
+                $medicos->setEstadocivil($_medicos->estadocivil);
+                $medicos->setOcupacion($_medicos->ocupacion);
+                $medicos->setReligion($_medicos->religion);
+                $medicos->setPais($_medicos->pais);
+                $medicos->setDepartamento($_medicos->Departamento);
+                $medicos->setMunicipio($_medicos->Municipio);
+                $medicos->setDomicilio($_medicos->domicilio);
+                $medicos->setEmail($_medicos->email);
+                $medicos->setClave($_medicos->clave);
+                $medicos->setEstado($_medicos->estado);
+                $result[] = $medicos;
+            }
+            return $result;
+        } catch (PDOException $e) {
+            die($e->getMessage());
+        }
+    }
+
+    public function ActualizarMedico($datos) {
+        try {
+            $sql = "CALL sp_ActualizarMedico (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);   ";
+            $stmt = $this->cnn->prepare($sql);
+            $stmt->bindParam(1, $datos["idMedico"]);
+            $stmt->bindParam(2, $datos["identificacion"]);
+            $stmt->bindParam(3, $datos["departamentoidentificacion"]);
+            $stmt->bindParam(4, $datos["nombre"]);
+            $stmt->bindParam(5, $datos["apellido"]);
+            $stmt->bindParam(6, $datos["apellidocasada"]);
+            $stmt->bindParam(7, $datos["genero"]);
+            $stmt->bindParam(8, $datos["fechanacimiento"]);
+            $stmt->bindParam(9, $datos["tiposangre"]);
+            $stmt->bindParam(10, $datos["telefono"]);
+            $stmt->bindParam(11, $datos["celular"]);
+            $stmt->bindParam(12, $datos["estadocivil"]);
+            $stmt->bindParam(13, $datos["domicilio"]);
+            $stmt->bindParam(14, $datos["email"]);
+            $stmt->bindParam(15, $datos["clave"]);
+            $stmt->bindParam(16, $datos["estado"]);
             $stmt->execute();
             if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 $this->result[] = $row;

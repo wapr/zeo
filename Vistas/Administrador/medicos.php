@@ -78,6 +78,7 @@
                                  <th>Sangre</th>
                                  <th>Telefono</th>
                                  <th>Celular</th>
+                                 <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -90,6 +91,9 @@
                                     <td><?php echo $_medico->getTiposangre('tiposangre'); ?></td>
                                     <td><?php echo $_medico->getTelefono('telefono'); ?></td>
                                     <td><?php echo $_medico->getCelular('celular'); ?></td>
+                                    <td>
+                                        <button type="button" id="editMedico" class="ui button violet" OnClick="location.href = 'LayoutAdministrador.php?load=editMedico&idMedico=<?php  echo $_medico->getIdMedico('idMedico'); ?>'"><i class="fa fa-edit"></i></button>
+                                    </td>
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>
