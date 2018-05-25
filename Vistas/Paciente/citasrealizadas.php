@@ -54,6 +54,7 @@
                     <th>Fecha Registro</th>
                     <th>Numero Hora</th>
                     <th>Hora Dia</th>
+                    <th>Frecuencia</th>
                 </tr>
             </thead>
         </table>
@@ -80,6 +81,7 @@
                      <th>Fecha registro</th>
                      <th>Numero hora</th>
                      <th>Numero dia</th>
+                     <th>Frecuencia</th>
                 </tr>
             </thead>
         </table>
