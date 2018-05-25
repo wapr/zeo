@@ -103,6 +103,7 @@ $(function(){
     $('#tblCitasRealizadas tbody').on( 'click', 'button.btnverActividad', function () {
         var data = citasRealizadas.row( $(this).parents('tr') ).data();
         $(".verActividades").modal("show")
+        console.log(data)
         var verActividadPaciente = $('#tblActividadesPacientes').DataTable({
             "destroy":true,
             "ajax": 'http://localhost/zeo/Controladores/PacientesControlador.php?listarActividades=listar&idCita='+data[6],
